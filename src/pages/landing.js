@@ -1,5 +1,5 @@
 import DiscordButton from "../components/DiscordButton";
-import RaffleEntry from "../components/modals/raffleEntry";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 import '../style/pages/landing.css';
 
@@ -26,10 +26,12 @@ export default function Landing(props) {
             </span>
             <DiscordButton /><br/><br/>
             {
-                localStorage.getItem("hasDiscordLogin") === "true" &&
+                localStorage.getItem("hasDiscordLogin") !== null &&
                 <div>
                     Please press any of the options below to pay for entry and gain access to the Project Muse server!<br/>
-                    (todo: add paypal buttons)
+                    <PayPalScriptProvider options={{ clientId: "ATKFikjxru9-u-HpvuUXYAfwNl-R6YzOge_NPitvTkh0ulKOZy1UxzK-fIBKIwvna6Cj4uX1MD-RZrvS" }}>
+                        <PayPalButtons style={{ layout: "vertical" }} />
+                    </PayPalScriptProvider>
                 </div>
             }
         </div>

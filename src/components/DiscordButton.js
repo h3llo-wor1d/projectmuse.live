@@ -1,6 +1,11 @@
 import '../style/components/discordButton.css';
 
-const AUTH_URL = "https://discord.com/oauth2/authorize?response_type=token&client_id=1037377769056780369&scope=identify";
+// sandbox url
+const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F&scope=identify+guilds.join";
+
+// final url
+const FINAL_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=https%3A%2F%2Fprojectmuse.live%2F&scope=identify+guilds.join";
+
 
 export default function DiscordButton(props)  {
     const handleLogin = () => {

@@ -9,6 +9,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import "./style/index.css";
+import Redirect from "./pages/redirect";
 
 const darkTheme = createTheme({
   palette: {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Landing />,
   },
+  {
+    path: "/redirect",
+    element: <Redirect />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
