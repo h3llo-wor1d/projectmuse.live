@@ -1,0 +1,20 @@
+.socialLoginButton {
+    width: 345px;
+    height: 54px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 3 #000) drop-shadow(0 2 3 #000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "SF Pro";
+    font-size: 20px;
+}
+
+.socialLoginButton:hover {
+    opacity: .75;
+    cursor: pointer;
+}
+
+.socialLoginButton img {
+    filter: brightness(0) invert(1);
+}

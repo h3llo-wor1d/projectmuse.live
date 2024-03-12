@@ -1,0 +1,67 @@
+
+@font-face {
+    font-family: "SF Pro";
+    src: url("./fonts/sf-pro.otf");
+  }
+  
+  @font-face {
+    font-family: "SF Pro Black";
+    src: url("./fonts/sf-pro-black.otf");
+  }
+
+  @font-face {
+    font-family: "Roobert";
+    src: url("./fonts/roobert.ttf");
+  }
+
+@media only screen and (max-width: 600px) {
+    .form {
+        width: 100vw;
+    }
+}
+@media only screen and (min-width: 600px) {
+    .form {
+        max-width: 690px;
+    }
+}
+
+.buttonFix:hover {
+    opacity: .75;
+}
+
+.buttonFix:active {
+    opacity: .5;
+}
+
+#shadowBox {
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Black w/opacity/see-through */
+    border: 3px solid;
+}
+
+.rainbow {
+    text-align: center;
+    font-size: inherit;
+    font-family: "Roobert";
+}
+
+.rainbow_text_animated {
+    background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow_animation 6s ease-in-out infinite;
+    background-size: 400% 100%;
+}
+
+@keyframes rainbow_animation {
+    0%,100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 100% 0;
+    }
+}

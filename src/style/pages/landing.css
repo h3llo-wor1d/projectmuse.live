@@ -1,0 +1,26 @@
+.landing-flex {
+    padding-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.landing-caption { 
+    font-family: "Roobert";
+    font-size: 15pt;
+    width: 85%;
+}
+
+@media only screen and (max-width: 600px) {
+    .logo {
+        width: 85%;
+    }
+}
+@media only screen and (min-width: 600px) {
+    .logo {
+        height: 150px;
+        width: auto;
+    }
+}
