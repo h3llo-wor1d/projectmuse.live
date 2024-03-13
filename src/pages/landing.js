@@ -69,7 +69,6 @@ export default function Landing(props) {
                     </PayPalScriptProvider>
                     :
                 <div>
-                    In order to join, please press the button below!<br/><br/>
                     <DiscordButton />
                 </div>
             }
