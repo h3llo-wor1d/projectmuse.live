@@ -71,7 +71,7 @@ export default function Landing(props) {
                     <br/>
                     {
                         localStorage.getItem("discordtoken") !== null ?
-                            <PayPalScriptProvider options={{ clientId: "ATKFikjxru9-u-HpvuUXYAfwNl-R6YzOge_NPitvTkh0ulKOZy1UxzK-fIBKIwvna6Cj4uX1MD-RZrvS" }}>
+                            <PayPalScriptProvider options={{ clientId: "ASjCgpL3Zs7Me7RocXLNzh42hiO66A8dvK-CVn8hghhdCpuxdebe8o4c1-pDtUJPZgBT6tk3Mpounpol" }}>
                                 <PayPalButtons style={{ layout: "vertical" }} createOrder={createOrder} onApprove={onApprove} />
                             </PayPalScriptProvider>
                             :
