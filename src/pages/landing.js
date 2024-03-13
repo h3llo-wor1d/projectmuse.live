@@ -43,6 +43,7 @@ export default function Landing(props) {
         const orderData = await response.json();
         console.log(JSON.stringify(orderData, null, 4));
         console.log("Transaction approved? It wasn't that bad after all...")
+        window.location.reload();
     }
 
     const ButtonStuff = (props) => {
