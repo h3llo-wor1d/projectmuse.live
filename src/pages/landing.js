@@ -2,6 +2,7 @@ import DiscordButton from "../components/DiscordButton";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 import '../style/pages/landing.css';
+import RejoinButton from "../components/RejoinButton";
 
 export default function Landing(props) {
     async function createOrder() {
@@ -33,9 +34,54 @@ export default function Landing(props) {
           })
         })
 
+        // NOTE TO PEOPLE WHO THINK THEY CAN BYPASS THIS
+        // YOU'RE NOT HOT SHIT! MY SERVER STORES YOUR USER ID WHEN YOU PAY SO YOU CAN GET ACCESS BACK INTO THE SERVER IF YOU LEAVE BY ACCIDENT
+        // YOU CANNOT CHANGE THIS AND GET ENTRY, IT WILL NOT WORK!!!
+
+        localStorage.setItem("hasPaidForMuse", "true")
+
         const orderData = await response.json();
         console.log(JSON.stringify(orderData, null, 4));
         console.log("Transaction approved? It wasn't that bad after all...")
+    }
+
+    const ButtonStuff = (props) => {
+        if (localStorage.getItem("hasPaidForMuse") === "true") {
+            return (
+                <div>
+                    <span className="landing-caption">
+                        <span className="rainbow rainbow_text_animated">
+                            It looks like you have already paid for this event!
+                        </span><br/>
+                        If you have left the server by accident, you can be re-invited by pressing the button below!<br/><br/>
+                        <RejoinButton />
+                    </span>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    {
+                        localStorage.getItem("discordtoken") !== null ?
+                        <span className="landing-caption">Please press any of the options below to pay for entry and gain access to the Project Muse server!<br/></span>
+                        :
+                        <span className="landing-caption">In order to join, please press the button below!<br/><br/></span>
+                    }
+                    <br/>
+                    {
+                        localStorage.getItem("discordtoken") !== null ?
+                            <PayPalScriptProvider options={{ clientId: "ATKFikjxru9-u-HpvuUXYAfwNl-R6YzOge_NPitvTkh0ulKOZy1UxzK-fIBKIwvna6Cj4uX1MD-RZrvS" }}>
+                                <PayPalButtons style={{ layout: "vertical" }} createOrder={createOrder} onApprove={onApprove} />
+                            </PayPalScriptProvider>
+                            :
+                        <div>
+                            <DiscordButton />
+                        </div>
+                    }
+                </div>
+            )
+        }
+                
     }
 
     return (
@@ -55,23 +101,7 @@ export default function Landing(props) {
                 For this one-time event, instead of ending after 6 songs, we will continue going; for every 10 participants who register for this special episode, another song will be made.<br/>
                 <br/>The show will <b>NOT</b> stop until <b>ALL</b> of those slots have been fulfilled.
                 <br/><br/>
-            {
-                localStorage.getItem("discordtoken") !== null ?
-                <span className="landing-caption">Please press any of the options below to pay for entry and gain access to the Project Muse server!<br/></span>
-                :
-                <span className="landing-caption">In order to join, please press the button below!<br/><br/></span>
-            }
-            <br/>
-            {
-                localStorage.getItem("discordtoken") !== null ?
-                    <PayPalScriptProvider options={{ clientId: "ATKFikjxru9-u-HpvuUXYAfwNl-R6YzOge_NPitvTkh0ulKOZy1UxzK-fIBKIwvna6Cj4uX1MD-RZrvS" }}>
-                        <PayPalButtons style={{ layout: "vertical" }} createOrder={createOrder} onApprove={onApprove} />
-                    </PayPalScriptProvider>
-                    :
-                <div>
-                    <DiscordButton />
-                </div>
-            }
+                <ButtonStuff />
             </span>
             <br/><br/>
         </div>
