@@ -7,7 +7,7 @@ export default function RejoinButton(props)  {
             method: "POST",
             body: JSON.stringify({
                 discordID: localStorage.getItem("discordid"),
-                discordToken: localStorage.getItemI("discordtoken")
+                discordToken: localStorage.getItem("discordtoken")
             })
         })
     }
