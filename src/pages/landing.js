@@ -26,7 +26,7 @@ export default function Landing(props) {
             </span>
             <DiscordButton /><br/><br/>
             {
-                localStorage.getItem("hasDiscordLogin") !== null &&
+                localStorage.getItem("discordtoken") !== null &&
                 <div>
                     Please press any of the options below to pay for entry and gain access to the Project Muse server!<br/>
                     <PayPalScriptProvider options={{ clientId: "ATKFikjxru9-u-HpvuUXYAfwNl-R6YzOge_NPitvTkh0ulKOZy1UxzK-fIBKIwvna6Cj4uX1MD-RZrvS" }}>

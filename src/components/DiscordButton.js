@@ -1,10 +1,10 @@
 import '../style/components/discordButton.css';
 
 // sandbox url
-const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F&scope=identify+guilds.join";
+const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fredirect&scope=identify+guilds.join";
 
 // final url
-const FINAL_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=https%3A%2F%2Fprojectmuse.live%2F&scope=identify+guilds.join";
+const FINAL_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=https%3A%2F%2Fprojectmuse.live%2Fredirect&scope=identify+guilds.join";
 
 
 export default function DiscordButton(props)  {
