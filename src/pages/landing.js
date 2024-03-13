@@ -4,6 +4,40 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import '../style/pages/landing.css';
 
 export default function Landing(props) {
+    async function createOrder() {
+        const response = await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/create-order", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        const orderData = await response.json();
+        
+        if (orderData.id) {
+            return orderData.id;
+        } else {
+            console.error("Failed to get payment id from PayPal api!")
+        }
+    }
+
+    async function onApprove(data) {
+        const response = await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/capture-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderID: data.orderID,
+            discordID: localStorage.getItem("discordid"),
+            discordToken: localStorage.getItem("discordtoken")
+          })
+        })
+
+        const orderData = await response.json();
+        console.log(JSON.stringify(orderData, null, 4));
+        console.log("Transaction approved? It wasn't that bad after all...")
+    }
+
     return (
         <div className="landing-flex">
             <img src="assets/icons/icon_color.png" alt="muse logo" className="logo"/><br/><br/>
@@ -21,19 +55,26 @@ export default function Landing(props) {
                 For this one-time event, instead of ending after 6 songs, we will continue going; for every 10 participants who register for this special episode, another song will be made.<br/>
                 <br/>The show will <b>NOT</b> stop until <b>ALL</b> of those slots have been fulfilled.
                 <br/><br/>
-                In order to join, please press the button below!<br/><br/>
-                
-            </span>
-            <DiscordButton /><br/><br/>
             {
-                localStorage.getItem("discordtoken") !== null &&
-                <div>
-                    Please press any of the options below to pay for entry and gain access to the Project Muse server!<br/>
+                localStorage.getItem("discordtoken") !== null ?
+                <span className="landing-caption">Please press any of the options below to pay for entry and gain access to the Project Muse server!<br/></span>
+                :
+                <span className="landing-caption">In order to join, please press the button below!<br/><br/></span>
+            }
+            <br/>
+            {
+                localStorage.getItem("discordtoken") !== null ?
                     <PayPalScriptProvider options={{ clientId: "ATKFikjxru9-u-HpvuUXYAfwNl-R6YzOge_NPitvTkh0ulKOZy1UxzK-fIBKIwvna6Cj4uX1MD-RZrvS" }}>
-                        <PayPalButtons style={{ layout: "vertical" }} />
+                        <PayPalButtons style={{ layout: "vertical" }} createOrder={createOrder} onApprove={onApprove} />
                     </PayPalScriptProvider>
+                    :
+                <div>
+                    In order to join, please press the button below!<br/><br/>
+                    <DiscordButton />
                 </div>
             }
+            </span>
+            <br/><br/>
         </div>
     )
 }
