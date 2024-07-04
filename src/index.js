@@ -10,6 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import "./style/index.css";
 import Redirect from "./pages/redirect";
+import InfoPage from "./pages/onboarding/infopage";
 
 const darkTheme = createTheme({
   palette: {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/redirect",
     element: <Redirect />
+  },
+  {
+    path: "/onboarding/info",
+    element: <InfoPage />
   }
 ]);
 
