@@ -133,6 +133,7 @@
     display: inline-block;
     font-size: inherit;
     width: 20pt;
+    z-index: 0;
     height: auto;
     position: absolute;
     top: 50%;

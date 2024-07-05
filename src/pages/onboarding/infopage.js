@@ -20,11 +20,11 @@ import online from '../../images/status/online.png';
 
 const Page = styled.div `
     padding: 30px 30px 30px 30px;
+    z-index: 0;
 `
 
 const VideoWrapper = styled.div `
 margin: 0;
-z-index: 990;
 position: absolute;
 `
 
@@ -32,7 +32,6 @@ const sleep = s => new Promise(r => setTimeout(r, s*1000));
 
 const SpawnItemWrapper = styled.div `
 margin: 0;
-z-index 9999;
 position: fixed;
 `
 
@@ -151,22 +150,27 @@ export default function InfoPage(props) {
                 </Tooltip>
                 
                 </div>*/}
-                    
-                <Breadcrumbs
+                <div style={{
+                     position: "fixed",
+                     bottom: 0,
+                     left: 0,
+                     zIndex: 999,
+                     width: "fit-content"
+                }}>
+                    <Breadcrumbs
                     separator={<NavigateNext fontSize="small" />}
                     aria-label="breadcrumb"
                     sx={{
-                        position: "fixed",
-                        bottom: 0,
-                        left: 0,
-                        zIndex: 9,
+                       
                         padding: "10px 20px 10px 30px",
                         borderTopRightRadius: "30px",
-                        backgroundColor: "rgba(255,255,255,0.15)"
+                        backgroundColor: "grey"
                     }} 
                     >
                     {breadcrumbs}
                 </Breadcrumbs>
+                </div>
+                
                 <Collapse in={achieveOpen} sx={{position: "absolute", left: 0, bottom: 0}}>
                     <Alert
                         severity="info"

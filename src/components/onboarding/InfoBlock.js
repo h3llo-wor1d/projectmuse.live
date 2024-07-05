@@ -6,14 +6,13 @@ import { Tooltip } from '@mui/material';
 const IBlock = styled.div `
 display: block;
 margin-bottom: 30px;
-z-index: 9;
+z-index: 0;
 `;
 
 const GridContainer = styled.div `
 display: grid;
 grid-template-columns: 18pt auto;
 column-gap: 12.5px;
-position: relative;
 `
 
 const NarratorButton = styled.div `
@@ -24,6 +23,7 @@ transform: translateY(-50%);
 `
 
 const HoverElement = styled.span `
+position: none;
 &:hover {
 cursor:pointer;
 }
@@ -38,7 +38,7 @@ export default function InfoBlock(props) {
                     <div>
                         
                         <HoverElement>
-                            <Tooltip title={props.tooltip} sx={{zIndex: 9, opacity: .9}} placement={"top"} arrow>{props.subheading}</Tooltip>
+                            <Tooltip title={props.tooltip} sx={{ opacity: .9}} placement={"top"} arrow>{props.subheading}</Tooltip>
                         </HoverElement>
                         {props.narrator !== undefined && <Narrator src={props.narrator} /> }
                     </div>
