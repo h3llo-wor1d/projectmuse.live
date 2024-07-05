@@ -141,7 +141,7 @@ export default function InfoPage(props) {
                         Spawned one more TikTok! Enjoy your brainrot!~
                     </Alert>
                 </Collapse>
-                {adhdMode &&
+                {/*adhdMode &&
                 <div style={{columnGap: "5px", display: "grid", gridTemplateColumns: "auto auto", position: "fixed",bottom: 10,right: 10,zIndex: 9999}}>
                 <Tooltip title="Remove distractions" arrow>
                     <IconButton sx={{bottom: "5px", opacity: count === 1 ? 0 : 1}}><RemoveCircle /></IconButton>
@@ -150,7 +150,7 @@ export default function InfoPage(props) {
                     <Chip label="ADHD Mode" onClick={handleClick} />  
                 </Tooltip>
                 
-                </div>}
+                </div>*/}
                     
                 <Breadcrumbs
                     separator={<NavigateNext fontSize="small" />}
