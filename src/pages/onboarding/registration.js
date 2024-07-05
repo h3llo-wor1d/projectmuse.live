@@ -4,6 +4,13 @@ import MuseLogo from '../../images/icon_color.png';
 import styled from 'styled-components';
 import { useEffect, useState } from "react";
 import DiscordButton from "../../components/DiscordButton";
+import { v4 as uuidv4 } from 'uuid';
+import { artLinkHandler } from "../../functions/registrationHandlers";
+import { getItem, setItem } from "../../functions/storageHandler";
+
+Array.prototype.stringify = function (arr) {
+    return JSON.stringify(arr);
+}
 
 const Page = styled.div `
     padding: 30px 30px 30px 30px;
@@ -23,11 +30,9 @@ const sleep = s => new Promise(r => setTimeout(r, s*1000));
 export default function Registration(props) {
     const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")));
     const [formData, setFormData] = useState({}); // get from localStorage as well?
-    const [rawImages, setRawImages] = useState([]);
-    const [images, setImages] = useState([]);
-    const [currentImage, setCurrentImage] = useState("");
+    const [artLinks, setArtLinks] = useState();
     const [platformURL, setPlatformURL] = useState("");
-    const [currentPlatform, setCurrentPlatform] = useState("");
+    const [currentPlatform, setCurrentPlatform] = useState("none");
     const [error, setError] = useState("");
     const [isError, setIsError] = useState(false);
 
@@ -36,6 +41,23 @@ export default function Registration(props) {
         setIsError(true);
         await sleep(2);
         setIsError(false);
+    }
+
+    const handleChange = (objType, data) => {
+        console.log(artLinks)
+        switch (objType) {
+            case "artLink":
+                let links = Array(4).join(".").split(".");
+                if (getItem("artLinks") === null) {
+                    setItem("artLinks", links.stringify());
+                } else {
+                    links = JSON.parse(getItem("artLinks"))
+                }
+                console.log(links)
+                return;
+            default:
+                return;
+        }
     }
 
     const onPlatformChange = (e) => {
@@ -57,47 +79,6 @@ export default function Registration(props) {
         setPlatformURL(e.target.value);
         setFormData({...formData, socialURL: e.target.value});
         console.log(JSON.stringify(formData, null, 4));
-    }
-
-    const handleCreateNewImage = () => {
-
-        // Various error messages //
-        if (currentImage === "") {
-            setTimeout(() => handleError("Image reference cannot be empty!"));
-            return;
-        }
-        if (currentImage.startsWith("http") !== true) {
-            setTimeout(() => handleError("Image reference must be a valid URL!"));
-            return;
-        }
-        // todo: pretty animation in for new element
-        setRawImages([...rawImages, currentImage])
-        setImages([...images, <FormControl sx={{ width: '95%', position: "relative", left: "50%", transform: "translateX(-50%)", marginTop: "25px" }} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">Reference Image</InputLabel>
-            <OutlinedInput
-                fullWidth={true}
-                id="outlined-adornment-password"
-                value={currentImage}
-                disabled
-                endAdornment={
-                <InputAdornment position="end">
-                    <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => console.log("todo: remove image")}
-                    edge="end"
-                    >
-                        <Remove htmlColor={"#a52422"} />
-                    </IconButton>
-                </InputAdornment>
-                }
-                label="Reference Image"
-            />
-        </FormControl>])
-        setCurrentImage("");
-    }
-
-    const handleChange = (e) => {
-        setCurrentImage(e.target.value);
     }
 
     const breadcrumbs = [
@@ -220,46 +201,37 @@ export default function Registration(props) {
                                 <TextField 
                                     label={`Reference Link ${i+1}`}
                                     variant="outlined" 
-                                    required
+                                    required={i < 2}
                                     sx={{flex: "35%"}}
                                 />
                             )
                         }
                     </Box>
                 </Box>
-                <br/>
+                <br/><br/>
                 <Box>
-                    <p style={{fontSize: "11pt", marginBottom: "10px"}}>Image References</p>
-                    <Paper >
-
-                        <FormControl sx={{ width: '95%', position: "relative", left: "50%", transform: "translateX(-50%)", marginTop: "25px" }} variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password">Image Link (Imgur, Discord, etc.)</InputLabel>
-                            <OutlinedInput
-                                fullWidth={true}
-                                id="outlined-adornment-password"
-                                value={currentImage}
-                                onChange={handleChange}
-                                endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleCreateNewImage}
-                                    edge="end"
-                                    >
-                                        <Add htmlColor={"#358600"} />
-                                    </IconButton>
-                                </InputAdornment>
-                                }
-                                label="Image Link (Imgur, Discord, etc.)"
-                            />
-                        </FormControl><br/><br/>
-                        <Paper elevation={5} sx={{height: "300px", overflowY: "scroll"}}>
-                            {images}
-                        </Paper>
-                    </Paper>
+                    <p style={{fontSize: "11pt", marginBottom: "10px"}}>Art References</p>
+                    <Box sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        rowGap: "25px",
+                        columnGap: "25px"
+                    }}>
+                        {
+                            Array.apply(null, Array(4)).map((i, v) => v).map((v, i) => 
+                                <TextField 
+                                    label={`Reference Link ${i+1}`}
+                                    variant="outlined" 
+                                    onChange={(e) => handleChange("artLink", {index: i, value: e.target.value})}
+                                    required={i < 2}
+                                    sx={{flex: "35%"}}
+                                />
+                            )
+                        }
+                    </Box>
                 </Box>
             </Box>
-            <br/>
+            <br/><br/>
         </Page>
     )
 }
