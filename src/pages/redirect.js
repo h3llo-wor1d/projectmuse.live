@@ -18,7 +18,7 @@ export default function Redirect(props) {
         if (f1.status === 200) {
             console.log("Authenticated with backend successfully!");
             console.log(`Bearer ${f2.access_token}`)
-            let f3 = await fetch("http://localhost:8080/profile", {
+            let f3 = await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/userprofile", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

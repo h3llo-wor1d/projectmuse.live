@@ -154,11 +154,22 @@ export default function Registration(props) {
         return errors;
     }
 
-    const submitForm = () => {
+    const submitForm = async () => {
         if (checkErrors().length > 0) return;
         console.log("apparently no errors!")
         let finalData = compileData();
-        console.log(finalData)
+        let f1 = await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/add-profile", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                discordID: identity.id,
+                content: finalData
+            })
+        })
+        console.log(f1.status, f1.statusText)
+
     }
 
     const onPlatformChange = (e) => {
