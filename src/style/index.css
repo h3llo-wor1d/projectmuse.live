@@ -128,3 +128,14 @@
       left: -4800px;
     }
   }
+
+  .twemoji {
+    display: inline-block;
+    font-size: inherit;
+    width: 20pt;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 12.5px;
+  }

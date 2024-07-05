@@ -1,20 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import DiscordButton from "../components/DiscordButton";
 import '../style/pages/landing.css';
+import { useEffect } from "react";
 
 export default function Landing(props) {
-    const MuseForm = () => {
-        return <div>
-            Muse form temporary
-        </div>
+
+    const navigate = useNavigate();
+
+    function goToOnboard() {
+        navigate('/onboarding/info');
     }
 
-    const faqPopup = () => {
-        return <div>
-            Commonly asked questions<br/>
-            Go fuck yourself!<br/>
-            FUUUUCK you baltimore!!!
-        </div>
-    }
+    useEffect(() => {
+        if (localStorage.getItem("discordtoken") !== undefined) {
+            goToOnboard();
+        }
+    }, [])
     
     return (
         <div className="landing-flex">
@@ -24,7 +25,7 @@ export default function Landing(props) {
             Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Pretium nibh ipsum consequat nisl vel. Euismod lacinia at quis risus. Blandit aliquam etiam erat velit. Etiam tempor orci eu lobortis elementum nibh tellus. Vulputate mi sit amet mauris commodo quis imperdiet massa. Eget dolor morbi non arcu risus quis varius quam. Odio facilisis mauris sit amet massa vitae tortor condimentum lacinia. Maecenas pharetra convallis posuere morbi leo urna. Eros in cursus turpis massa tincidunt dui ut ornare lectus. Non sodales neque sodales ut. Pulvinar neque laoreet suspendisse interdum.
             <br/><br/>
             {
-                localStorage.getItem("discordtoken") === null ? <DiscordButton /> : <MuseForm />
+                localStorage.getItem("discordtoken") === null && <DiscordButton />
             }
             </span>
             <br/><br/>

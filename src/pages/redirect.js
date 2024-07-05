@@ -17,6 +17,18 @@ export default function Redirect(props) {
         let f2 = await f1.json();
         if (f1.status === 200) {
             console.log("Authenticated with backend successfully!");
+            console.log(`Bearer ${f2.access_token}`)
+            let f3 = await fetch("http://localhost:8080/profile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    token: `Bearer ${f2.access_token}`
+                })
+            })
+            let f4 = await f3.json();
+            localStorage.setItem("userData", JSON.stringify(f4))
             localStorage.setItem("discordtoken", f2.access_token);
             console.log("Successfully set token in local storage. User may now close the window.");
             setSafe("You may now close this window.");
@@ -29,7 +41,7 @@ export default function Redirect(props) {
         handleAuth();
         window.onunload = refreshParent;
         function refreshParent() { 
-            window.opener.location.reload();
+            window.location.reload();
         }
     }, [])
     
