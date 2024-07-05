@@ -122,21 +122,25 @@ export default function Registration(props) {
                     {error}
                 </Alert>
             </Collapse>
-            <Breadcrumbs
-                separator={<NavigateNext fontSize="small" />}
-                aria-label="breadcrumb"
-                sx={{
-                    position: "fixed",
-                    bottom: 0,
-                    left: 0,
-                    zIndex: 99999,
-                    padding: "10px 20px 10px 30px",
-                    borderTopRightRadius: "30px",
-                    backgroundColor: "rgba(255,255,255,0.15)"
-                }} 
-                >
-                {breadcrumbs}
-            </Breadcrumbs>
+            <div style={{
+                     position: "fixed",
+                     bottom: 0,
+                     left: 0,
+                     zIndex: 0,
+                }}>
+                    <Breadcrumbs
+                    separator={<NavigateNext fontSize="small" />}
+                    aria-label="breadcrumb"
+                    sx={{
+                       
+                        padding: "10px 20px 10px 30px",
+                        borderTopRightRadius: "30px",
+                        backgroundColor: "grey"
+                    }} 
+                    >
+                    {breadcrumbs}
+                </Breadcrumbs>
+                </div>
             <div style={{textAlign: "center"}}>
                 <img src={MuseLogo} alt="muse logo" className="logo" />
             </div>
@@ -238,6 +242,7 @@ export default function Registration(props) {
                 <Box>
                     <p style={{fontSize: "11pt", marginBottom: "10px"}}>Image References</p>
                     <Paper >
+
                         <FormControl sx={{ width: '95%', position: "relative", left: "50%", transform: "translateX(-50%)", marginTop: "25px" }} variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Image Link (Imgur, Discord, etc.)</InputLabel>
                             <OutlinedInput

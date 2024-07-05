@@ -18,13 +18,6 @@ height: auto;
 
 `
 
-const NarratorButton = styled.div `
-position: absolute;
-right: 0;
-top: 50%;
-transform: translateY(-50%);
-`
-
 const HoverElement = styled.span `
 &:hover {
 cursor: pointer;
@@ -45,9 +38,6 @@ export default function InfoBlock(props) {
                         {props.narrator !== undefined && <Narrator src={props.narrator} /> }
                     </div>
                 </GridContainer>
-                <NarratorButton>
-                    
-                </NarratorButton>
             </h2>
             {props.p}
         </IBlock>
