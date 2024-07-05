@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import MuseLogo from '../../images/icon_color.png';
 import InfoBlock from '../../components/onboarding/InfoBlock';
 import VideoPlayer from '../../components/onboarding/VideoPlayer';
-import { Alert, Breadcrumbs, Chip, Fab, Link, Modal, Tooltip, Typography } from '@mui/material';
+import { Alert, Breadcrumbs, Chip, Fab, Link, Modal, Paper, Tooltip, Typography } from '@mui/material';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -17,6 +17,8 @@ import { commonFAQ } from '../../data/commonFAQ';
 import dnd from '../../images/status/dnd.png';
 import idle from '../../images/status/idle.png';
 import online from '../../images/status/online.png';
+import invis from '../../images/status/invis.png';
+import { otherFAQ } from '../../data/otherFAQ';
 
 const Page = styled.div `
     padding: 30px 30px 30px 30px;
@@ -54,21 +56,23 @@ export default function InfoPage(props) {
     const [achieveOpen, setAchieveOpen] = React.useState(false);
     const [modalOpen, setModalOpen] = React.useState(false);
     const [adhdMode, setAdhdMode] = React.useState(true);
-    const [canProgress, setCanProgress] = React.useState(true); 
+    const [canProgress, setCanProgress] = React.useState(localStorage.getItem("progressAllowed") !== null); 
     // set to false for prod and only set to true when user presses "I UNDERSTAND AND HAVE READ THE ENTIRE PAGE" at bottom
 
     const breadcrumbs = [
         <Typography key="3" color="text.primary">
             Info & Instructions
         </Typography>,
-        <Link
+        canProgress ? <Link
           underline="hover"
           key="2"
           color="inherit"
-          href={canProgress ? "/onboarding/registration" : "#"}
+          href={"/onboarding/registration"}
         >
           Registration
-        </Link>,
+        </Link> : <Typography key="3" color="text.primary">
+            Registration
+        </Typography>,
       ];
 
     var audioPlayer = new Audio(RipNTear);
@@ -244,13 +248,45 @@ export default function InfoPage(props) {
                                 <div style={{display: "flex", alignItems: "center", marginBottom: "5px"}}>
                                 <img src={idle} alt="dnd" style={{"height": "14pt", verticalAlign: "middle", marginRight: 8}} /><span>Idle</span>
                                 </div>
-                                <div style={{display: "flex", alignItems: "center", marginBottom: "5px"}}>
+                                <div style={{display: "flex", alignItems: "center"}}>
                                 <img src={online} alt="dnd" style={{"height": "14pt", verticalAlign: "middle", marginRight: 8}} /><span>Online</span>
                                 </div>
                             </p>
+                        </div><br/>
+                        The bot will NOT pick you if you have
+                        <div style={{display: "grid", gridTemplateColumns: "10px auto", columnGap: "10px", marginTop: "10px", marginBottom: "10px"}}>
+                            <div style={{width: "8px", height: "100%", borderRadius: "30px", backgroundColor: "grey"}} />
+                            <p>
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                <img src={invis} alt="invis" style={{"height": "14pt", verticalAlign: "middle", marginRight: 8}} /><span>Invisible/Offline</span>
+                                </div>
+                            </p>
                         </div>
+                        set as your status, or if you have opted into getting temporarily skipped in advanced settings!
                     </p>
                 } /><br/>
+                <InfoBlock subheading={"Other Commonly Asked Questions"} 
+                tooltip={"More frequently asked questions regarding the show's operations!"}
+                emoji={"❓"} p={
+                    <div style={{marginTop: "5px", display: "grid", gridTemplateColumns: "auto", rowGap: "30px"}}>
+                        {
+                            otherFAQ.map(i => <div>
+                                <h3>"{i[0]}"</h3>
+                                <div style={{display: "grid", gridTemplateColumns: "10px auto", columnGap: "10px", marginTop: "8px"}}>
+                                    <div style={{width: "8px", height: "100%", borderRadius: "30px", backgroundColor: "grey"}} />
+                                    <p>{i[1]}</p>
+                                    </div>
+                            </div>)
+                        }
+                    </div>
+                } />
+                {canProgress !== true && <Paper elevation={2} sx={{width: "500px", padding: "20px 20px 20px 20px"}}>
+                    I acknowledge that I have read everything on this page! I will not ask stupid questions in the server because I missed a part. I understand that I will be profusely complained to if I do that!<br/><br/>
+                    <Button variant="outlined" onClick={() => {
+                        localStorage.setItem("progressAllowed", "true");
+                        setCanProgress(true)
+                    }}>I Acknowledge</Button>
+                </Paper>}<br/>
             </div>
         </Page>
     )
