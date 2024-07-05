@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { artLinkHandler } from "../../functions/registrationHandlers";
 import { getItem, getItemJSON, setItem } from "../../functions/storageHandler";
 import { Identity } from "../../identity";
+import { errorMessages } from "../../data/errorMessages";
 
 const Page = styled.div `
     padding: 30px 30px 30px 30px;
@@ -25,8 +26,13 @@ const platforms = [
 const sleep = s => new Promise(r => setTimeout(r, s*1000));
 
 export default function Registration(props) {
-    const [formData, setFormData] = useState({}); // get from localStorage as well?
-    const [platformURL, setPlatformURL] = useState("");
+    var artLinks = getItem(`artLinks`) !== null ? JSON.parse(getItem(`artLinks`)) : ["","","",""];
+    var songLinks = getItem(`songLinks`) !== null ? JSON.parse(getItem(`songLinks`)) : ["","","",""];
+    var identity = getItem(`identity`) !== null ? JSON.parse(getItem(`identity`)) : JSON.parse(JSON.stringify({...JSON.parse(getItem("userData")), social_url: "", preferred_social: "none"}));
+    var songStyle = getItem(`musicStyleNotes`) !== null ? getItem(`musicStyleNotes`) : "";
+    var artStyle = getItem(`artStyleNotes`) !== null ? getItem(`artStyleNotes`) : "";
+
+    const [platformURL, setPlatformURL] = useState(identity.social_url);
     const [currentPlatform, setCurrentPlatform] = useState("none");
     const [error, setError] = useState("");
     const [isError, setIsError] = useState(false);
@@ -34,11 +40,13 @@ export default function Registration(props) {
     const [artError, setArtError] = useState(false);
     const [songError, setSongError] = useState(false);
 
-    var artLinks = getItem(`artLinks`) !== null ? JSON.parse(getItem(`artLinks`)) : ["","","",""];
-    var songLinks = getItem(`songLinks`) !== null ? JSON.parse(getItem(`songLinks`)) : ["","","",""];
-    var identity = getItem(`identity`) !== null ? JSON.parse(getItem(`identity`)) : JSON.parse(JSON.stringify({...JSON.parse(getItem("userData")), social_url: "", preferred_social: "none"}));
-    var songStyle = getItem(`musicStyleNotes`) !== null ? JSON.parse(getItem(`musicStyleNotes`)) : "";
-    var artStyle = getItem(`artStyleNotes`) !== null ? JSON.parse(getItem(`artStyleNotes`)) : "";
+    const [artStyleError, setArtStyleError] = useState(false);
+    const [musicStyleError, setMusicStyleError] = useState(false)
+    
+    const [errors, setErrors] = useState([]);
+
+    const [formData, setFormData] = useState({}); // get from localStorage as well?
+   
     const handleError = async (e) => {
         setError(e);
         setIsError(true);
@@ -46,17 +54,17 @@ export default function Registration(props) {
         setIsError(false);
     }
 
-    const handleSubmit = () => {
+    const compileData = () => {
         var chunk1 = JSON.parse(getItem(`artLinks`));
         var chunk2 = JSON.parse(getItem(`songLinks`));
         var chunk3 = JSON.parse(getItem(`identity`));
-        var out = {
+        return {
             artData: {
-                refLinks: chunk1,
+                refLinks: chunk1.filter(i => i !== ""),
                 styleNotes: getItem("artStyleNotes")
             },
             songData: {
-                refLinks: chunk2,
+                refLinks: chunk2.filter(i => i !== ""),
                 styleNotes: getItem("musicStyleNotes")
             },
             identity: {
@@ -66,7 +74,6 @@ export default function Registration(props) {
                 preferred_social: chunk3.preferred_social
             }
         } 
-        console.log(out);
     }
 
     useEffect(() => {
@@ -119,51 +126,39 @@ export default function Registration(props) {
         return false;
     }
 
-    const checkSongErrors = () => {
-        let artLinks = getItemJSON("songLinks");
-        let i = 0;
-        artLinks.forEach(it => {
-            if (!it.startsWith("http") && it.length > 0) i++;
-        })
-
-        if (i > 0) return 101;
-        if (artLinks[0] === "" || artLinks[1] === "") return 100;
-        
-        // default case
-        return false;
-    }
-
     const checkErrors = () => {
-        switch (checkArtErrors()) {
-            case 100:
-                handleError("Missing required fields!");
-                setArtError(100);
-                return false;
-            case 101:
-                handleError("Invalid url provided in one or more fields!");
-                setArtError(101);
-                return false;
-            default:
-                break;
-        }
-        switch (checkSongErrors()) {
-            case 100:
-                handleError("Missing required fields!");
-                setSongError(100);
-                return false;
-            case 101:
-                handleError("Invalid url provided in one or more fields!");
-                setSongError(101);
-                return false;
-            default:
-                break;
-        }
-        return true;
+        // handle multiple errors
+        let errors = [];
+        
+        // song errors
+        let i1 = 0;
+        let songLinks = getItemJSON("songLinks");
+        songLinks.forEach(it => {
+            if (!it.startsWith("http") && it.length > 0) i1++;
+        })
+        if (i1 > 0) errors.push(201);
+        if (songLinks[0] === "" || songLinks[1] === "") errors.push(200);
+        if (getItem("musicStyleNotes") === null || getItem("musicStyleNotes") === "") errors.push(202);
+
+        // art errors
+        let i2 = 0;
+        let artLinks = getItemJSON("artLinks");
+        artLinks.forEach(it => {
+            if (!it.startsWith("http") && it.length > 0) i2++;
+        })
+        if (i2 > 0) errors.push(101);
+
+        if (artLinks[0] === "" || artLinks[1] === "") errors.push(100);
+        if (getItem("artStyleNotes") === null || getItem("artStyleNotes") === "") errors.push(102);
+        setErrors(errors);
+        return errors;
     }
 
     const submitForm = () => {
-        if (checkErrors() === false) return;
+        if (checkErrors().length > 0) return;
         console.log("apparently no errors!")
+        let finalData = compileData();
+        console.log(finalData)
     }
 
     const onPlatformChange = (e) => {
@@ -199,6 +194,7 @@ export default function Registration(props) {
             Registration
         </Typography>,
     ];
+
     return (
         <Page>
             <Collapse in={isError} sx={{position: "fixed", right: 0, top: 0}}>
@@ -281,7 +277,7 @@ export default function Registration(props) {
                             label={currentPlatform === "youtube" ? "Account URI" : "Account Username" }
                             variant="outlined" 
                             required
-                            disabled={currentPlatform==="none"}
+                            disabled={identity.preferred_social==="none"}
                             value={platformURL}
                             defaultValue={identity.social_url}
                             onChange={onPlatformUrlChange}
@@ -308,19 +304,21 @@ export default function Registration(props) {
                             defaultValue={songLinks[0]}
                             onChange={(e) => handleChange("link", {index: 0, value: e.target.value, type: 'song'})}
                             required={true}
+                            helperText={errors.indexOf(200) !== -1 && errorMessages[200]}
                             sx={{flex: "35%"}}
                             onClick={() => setSongError(0)}
-                            error={songError === 100 || songError === 101}
+                            error={errors.indexOf(200) !== -1 || errors.indexOf(201) !== -1}
                         />
                         <TextField 
                             label={`Reference Link 2`}
                             variant="outlined" 
                             defaultValue={songLinks[1]}
                             onChange={(e) => handleChange("link", {index: 1, value: e.target.value, type: 'song'})}
+                            helperText={errors.indexOf(200) !== -1 && errorMessages[200]}
                             required={true}
                             sx={{flex: "35%"}}
                             onClick={() => setSongError(0)}
-                            error={songError === 100 || songError === 101}
+                            error={errors.indexOf(200) !== -1 || errors.indexOf(201) !== -1}
                         />
                         {
                             Array.apply(null, Array(2)).map((i, v) => v).map((v, i) => 
@@ -328,18 +326,18 @@ export default function Registration(props) {
                                     label={`Reference Link ${i+3}`}
                                     variant="outlined" 
                                     defaultValue={songLinks[i+2]}
-                                    onClick={() => {
-                                        if (songError === 101) setSongError(0);
-                                    }}
-                                    error={songError === 101}
+                                    helperText={errors.indexOf(201) !== -1 && errorMessages[201]}
+                                    error={errors.indexOf(201) !== -1}
                                     onChange={(e) => handleChange("link", {index: i+2, value: e.target.value, type: 'song'})}
                                     sx={{flex: "35%"}}
                                 />
                             )
                         }
                         <TextField multiline required fullWidth label="Style Notes/Other Notes" rows={3}
-                        onChange={(e) => handleChange("style", {value: e.target.value, type: 'music'})}
-                        defaultValue={songStyle}
+                            onChange={(e) => handleChange("style", {value: e.target.value, type: 'music'})}
+                            error={errors.indexOf(202) !== -1}
+                            defaultValue={songStyle}
+                            helperText={errors.indexOf(202) !== -1 && errorMessages[202]}
                         />
                     </Box>
                 </Box>
@@ -358,16 +356,18 @@ export default function Registration(props) {
                             defaultValue={artLinks[0]}
                             sx={{flex: "35%"}}
                             required
+                            helperText={errors.indexOf(100) !== -1 && errorMessages[100]}
                             onChange={(e) => handleChange("link", {index: 0, value: e.target.value, type: 'art'})}
-                            error={artError === 100 || artError === 101}
                             onClick={() => setArtError(0)}
+                            error={errors.indexOf(100) !== -1 || errors.indexOf(101) !== -1}
                         />
                         <TextField 
                             label={`Reference Link 2`}
                             variant="outlined" 
                             defaultValue={artLinks[1]}
                             sx={{flex: "35%"}}
-                            error={artError === 100 || artError === 101}
+                            helperText={errors.indexOf(100) !== -1 && errorMessages[100]}
+                            error={errors.indexOf(100) !== -1 || errors.indexOf(101) !== -1}
                             required
                             onChange={(e) => handleChange("link", {index: 1, value: e.target.value, type: 'art'})}
                             onClick={() => setArtError(0)}
@@ -377,7 +377,7 @@ export default function Registration(props) {
                                 <TextField 
                                     label={`Reference Link ${i+3}`}
                                     variant="outlined" 
-                                    error = {artError === 101}
+                                    error={errors.indexOf(101) !== -1}
                                     onChange={(e) => handleChange("link", {index: i+2, value: e.target.value, type: 'art'})}
                                     defaultValue={artLinks[i+2]}
                                     onClick={() => {
@@ -392,7 +392,11 @@ export default function Registration(props) {
                         required 
                         fullWidth label="Style Notes/Other Notes" 
                         onChange={(e) => handleChange("style", {value: e.target.value, type: 'art'})}
-                        rows={3} defaultValue={artStyle} />
+                        error={errors.indexOf(102) !== -1}
+                        rows={3} defaultValue={artStyle} 
+                        helperText={errors.indexOf(102) !== -1 && errorMessages[102]}
+                        />
+                        
                     </Box>
                 </Box>
             </Box>
@@ -401,6 +405,10 @@ export default function Registration(props) {
                 This form can be edited again at any time. Press the button below to gain access to the 
                 rest of the server and complete the registration process.<br/><br/>
                 <Button variant="outlined" onClick={submitForm}>Submit Form</Button>
+                <br/>
+                <p style={{color: "#f44336", fontSize: "9pt", opacity: errors.length > 0 ? 1 : 0, marginTop: "8px"}}>
+                    Some fields are missing or incorrect
+                </p>
             </Paper>
             <br/>
         </Page>

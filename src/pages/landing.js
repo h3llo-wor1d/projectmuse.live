@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import DiscordButton from "../components/DiscordButton";
 import '../style/pages/landing.css';
 import { useEffect } from "react";
+import { Link } from '@mui/material';
 
 export default function Landing(props) {
 
@@ -12,7 +13,7 @@ export default function Landing(props) {
     }
 
     useEffect(() => {
-        if (localStorage.getItem("discordtoken") !== undefined) {
+        if (localStorage.getItem("discordtoken") !== null) {
             goToOnboard();
         }
     }, [])
@@ -21,8 +22,16 @@ export default function Landing(props) {
         <div className="landing-flex">
             <img src="assets/icons/icon_color.png" alt="muse logo" className="logo"/><br/><br/>
             <span className="landing-caption">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum integer enim neque volutpat ac tincidunt vitae semper quis. Sit amet est placerat in. Lacinia at quis risus sed. Amet porttitor eget dolor morbi non arcu risus quis. Quisque non tellus orci ac auctor augue mauris augue. Risus viverra adipiscing at in. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. A erat nam at lectus urna. Eu facilisis sed odio morbi quis commodo odio.<br/><br/>
-            Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Pretium nibh ipsum consequat nisl vel. Euismod lacinia at quis risus. Blandit aliquam etiam erat velit. Etiam tempor orci eu lobortis elementum nibh tellus. Vulputate mi sit amet mauris commodo quis imperdiet massa. Eget dolor morbi non arcu risus quis varius quam. Odio facilisis mauris sit amet massa vitae tortor condimentum lacinia. Maecenas pharetra convallis posuere morbi leo urna. Eros in cursus turpis massa tincidunt dui ut ornare lectus. Non sodales neque sodales ut. Pulvinar neque laoreet suspendisse interdum.
+            Welcome to Project Muse! If this is your first time with us, the show has changed! Originally, Project Muse was initially just a live BGM raffle, 
+            but now functions as a live emote AND bgm raffle, where we will interview you at random through discord and make you art within an hour or less!<br/><br/>
+
+            This season is incredibly special, because we have transitioned from a solo show into a couples show! My boyfriend, <Link href="https://x.com/aliens_gate" target="_blank" underline="hover"
+            key="2"
+            color="yellow">Neptune</Link> has joined the team! He has been my artist for almost 2 and a half years, and to say it's crazy to call him mine would be an understatement.<br/><br/>
+            
+            Alas, you are not here to read about my love life! In order to actually participate in the show, we need you to sign in with Discord! 
+            We use this data to automatically add you to the server
+            and autofill out some of the details of the registration form on the next page to make things easier for you.
             <br/><br/>
             {
                 localStorage.getItem("discordtoken") === null && <DiscordButton />
