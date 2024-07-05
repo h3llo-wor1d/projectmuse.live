@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import Twemoji from 'react-twemoji';
+import Narrator from '../Narrator';
+import { Tooltip } from '@mui/material';
 
 const IBlock = styled.div `
 display: block;
@@ -12,6 +14,18 @@ column-gap: 12.5px;
 position: relative;
 `
 
+const NarratorButton = styled.div `
+position: absolute;
+right: 0;
+top: 50%;
+transform: translateY(-50%);
+`
+
+const HoverElement = styled.span `
+&:hover {
+cursor:pointer;
+}
+`
 
 export default function InfoBlock(props) {
     return (
@@ -19,8 +33,17 @@ export default function InfoBlock(props) {
             <h2 style={{position: "relative", height: "30pt"}}>
                 <GridContainer>
                     <Twemoji options={{ className: 'twemoji' }}>{props.emoji}</Twemoji>
-                    {props.subheading}
+                    <div>
+                        
+                        <HoverElement>
+                            <Tooltip title={props.tooltip} sx={{zIndex: 99999, opacity: .9}} placement={"top"} arrow>{props.subheading}</Tooltip>
+                        </HoverElement>
+                        {props.narrator !== undefined && <Narrator src={props.narrator} /> }
+                    </div>
                 </GridContainer>
+                <NarratorButton>
+                    
+                </NarratorButton>
             </h2>
             {props.p}
         </IBlock>

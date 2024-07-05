@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import MuseLogo from '../../images/icon_color.png';
 import InfoBlock from '../../components/onboarding/InfoBlock';
 import VideoPlayer from '../../components/onboarding/VideoPlayer';
-import { Alert, Breadcrumbs, Chip, Link, Modal, Typography } from '@mui/material';
+import { Alert, Breadcrumbs, Chip, Fab, Link, Modal, Tooltip, Typography } from '@mui/material';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -11,7 +11,9 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import VineBoom from '../../audio/vine-boom.mp3';
 import RipNTear from '../../audio/RipNTear.flac';
-import { NavigateNext } from '@mui/icons-material';
+import { NavigateNext, RemoveCircle } from '@mui/icons-material';
+import i1 from "../../audio/Narrator/i1.flac";
+import { commonFAQ } from '../../data/commonFAQ';
 
 const Page = styled.div `
     padding: 30px 30px 30px 30px;
@@ -19,10 +21,8 @@ const Page = styled.div `
 
 const VideoWrapper = styled.div `
 margin: 0;
-z-index: 99;
+z-index: 990999;
 position: absolute;
-width: 100%;
-height: 100%;
 `
 
 const sleep = s => new Promise(r => setTimeout(r, s*1000));
@@ -46,6 +46,17 @@ const style = {
     p: 4,
   };
   
+
+const StyledFab = styled(Fab)({
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+    width: 25,
+    height: 25
+});
 
 export default function InfoPage(props) {
     const [open, setOpen] = React.useState(false);
@@ -80,6 +91,12 @@ export default function InfoPage(props) {
         setAchieveOpen(false);
     }
 
+    const handleNewOpen = async () => {
+        setOpen(true);
+        await sleep(2.5);
+        setOpen(false);
+    }
+
     const handleRemoveAll = async () => {
         audioPlayer.pause();
         setVideoPlayers([]);
@@ -110,7 +127,7 @@ export default function InfoPage(props) {
         }
         setCount(count+1);
         setVideoPlayers([...videoPlayers, <VideoPlayer />]);
-        setOpen(!open);
+        setTimeout(() => handleNewOpen())
     }
     
     return (    
@@ -130,29 +147,22 @@ export default function InfoPage(props) {
             <spawnItemWrapper>
                 <Collapse in={open}>
                     <Alert
-                        action={
-                            <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setOpen(false);
-                            }}
-                            >
-                            <CloseIcon fontSize="inherit" />
-                            </IconButton>
-                        }
                         sx={{ mb: 2 }}
                         >
                         Spawned one more TikTok! Enjoy your brainrot!~
                     </Alert>
                 </Collapse>
-                {adhdMode && <Chip label="ADHD Mode" onClick={handleClick} sx={{
-                    position: "fixed",
-                    bottom: 10,
-                    right: 10,
-                    zIndex: 99999
-                }} />}
+                {adhdMode &&
+                <div style={{columnGap: "5px", display: "grid", gridTemplateColumns: "auto auto", position: "fixed",bottom: 10,right: 10,zIndex: 99999}}>
+                <Tooltip title="Remove distractions" arrow>
+                    <IconButton sx={{bottom: "5px", opacity: count === 1 ? 0 : 1}}><RemoveCircle /></IconButton>
+                </Tooltip>
+                <Tooltip title="Indulge the zoomers' attention span issues" arrow>
+                    <Chip label="ADHD Mode" onClick={handleClick} />  
+                </Tooltip>
+                
+                </div> }
+                    
                 <Breadcrumbs
                     separator={<NavigateNext fontSize="small" />}
                     aria-label="breadcrumb"
@@ -183,25 +193,47 @@ export default function InfoPage(props) {
             <div style={{textAlign: "center"}}>
                 <img src={MuseLogo} alt="muse logo" className="logo" />
             </div>
-            <br/>
-            <InfoBlock subheading={"Information On The Show"} emoji={"💫"} p={
-                <p>
-                    A common misconception is that this is just a normal interview show. Project Muse, however, 
-                    doubles as live BGM raffle as well, in which you get picked at random, interviewed, and then 
-                    made music for, all in an hour or less.<br/>
-                    <br/>
-                    More information on how the show runs is available below!
-                </p>
-            } />
-            <InfoBlock subheading={"Required Steps To Participate"} emoji={"‼"} p={
-                <p>
-                    In order to participate in the show, all participants must fill out the form on the next page. If the form is not filled out, you CANNOT be picked.<br/><br/>
-                    The form allows myself and Neptune to have a better idea of the style of art and music you are looking for and provide a better end result.
-                    It is around 10 questions, most of which may have been pre-filled using data on your profile.<br/><br/>
-                    Additionally, failure to join the Show VC within 60 seconds of invitation will result being skipped.
-                </p>
-            } />
-            
+            <br/><br/>
+            <div style={{zIndex: 99999, position: 'relative'}}>
+                <InfoBlock subheading={"Information On The Show"} emoji={"💫"} narrator={i1} 
+                tooltip={"Small introductory segment about the show"}
+                p={
+                    <p>
+                        A common misconception is that this is just a normal interview show. Project Muse, however, 
+                        doubles as a live BGM raffle as well, in which you get picked at random, interviewed, and then 
+                        made music for, all in an hour or less.<br/>
+                        <br/>
+                        More information on how the show runs is available below!
+                    </p>
+                } /><br/>
+                <InfoBlock subheading={"Required Steps To Participate"} 
+                tooltip={"The steps you must take to participate and receive free art and music!"}
+                emoji={"‼"} p={
+                    <p>
+                        In order to participate in the show, all participants must fill out the form on the next page. If the form is not filled out, you CANNOT be picked.<br/><br/>
+                        The form allows myself and Neptune to have a better idea of the style of art and music you are looking for and provide a better end result.
+                        It is around 10 questions, most of which may have been pre-filled using data on your profile.<br/><br/>
+                        Additionally, failure to join the Show VC within 60 seconds of invitation will result being skipped.
+                    </p>
+                } /><br/>
+                <InfoBlock subheading={"Commonly Asked Questions Regarding Registration"} 
+                tooltip={"Brief FAQ for registration"}
+                emoji={"🤔"} p={
+                    <div style={{marginTop: "5px"}}>
+                        {
+                            commonFAQ.map(i => <div>
+                                <h3>"{i[0]}"</h3>
+                                <div style={{display: "grid", gridTemplateColumns: "10px auto", columnGap: "10px", marginTop: "8px"}}>
+                                    <div style={{width: "8px", height: "100%", borderRadius: "30px", backgroundColor: "grey"}} />
+                                    <p>{i[1]}</p>
+                                    </div>
+                            </div>)
+                        }
+                    </div>
+                    
+                } />
+                
+            </div>
         </Page>
     )
 }

@@ -8,6 +8,10 @@ const getRandom = a => {
     return a[Math.floor(Math.random() * a.length)]
 }
 
+function randomNumber(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 const NoSelect = styled.img `
 -moz-user-select: none;
 -webkit-user-select: none;
@@ -43,7 +47,7 @@ const useDraggable = ({ onDrag = id } = {}) => {
   // do not store position in useState! even if you useEffect on
   // it and update `transform` CSS property, React still rerenders
   // on every state change, and it LAGS
-  const position = useRef({ x: 0, y: 0 });
+  const position = useRef({ x: 0, y: 0 }); // uuuh ok so we want to randomize this
   const ref = useRef();
 
   // we've moved the code into the hook, and it would be weird to
