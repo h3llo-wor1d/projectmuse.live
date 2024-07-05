@@ -1,7 +1,7 @@
 import '../style/components/discordButton.css';
 import DiscordIcon from '../images/icons/discord.svg';
 // test url, prod url uses projectmuse.live
-const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fredirect&scope=identify+guilds.join";
+const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=https%3A%2F%2Fprojectmuse.live%2Fredirect&scope=identify+guilds.join";
 
 
 export default function DiscordButton(props)  {

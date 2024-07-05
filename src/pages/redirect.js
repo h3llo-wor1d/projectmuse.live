@@ -12,7 +12,7 @@ export default function Redirect(props) {
               'Content-Type': "application/x-www-form-urlencoded",
               "Authorization": `Basic MTAyMzY5NDg2Nzc5ODQ0MTk4NDo1TUc2a1hiVGhSdHBYUFBOUFE2aVZZclBUOElaN2YwTg==`
             },
-            body: `grant_type=authorization_code&code=${code}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fredirect`
+            body: `grant_type=authorization_code&code=${code}&redirect_uri=https%3A%2F%2Fprojectmuse.live%2Fredirect` // local version `grant_type=authorization_code&code=${code}&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2Fredirect`
         })
         let f2 = await f1.json();
         if (f1.status === 200) {
