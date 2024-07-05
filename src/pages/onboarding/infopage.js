@@ -154,8 +154,7 @@ export default function InfoPage(props) {
                      position: "fixed",
                      bottom: 0,
                      left: 0,
-                     zIndex: 999,
-                     width: "fit-content"
+                     zIndex: 0,
                 }}>
                     <Breadcrumbs
                     separator={<NavigateNext fontSize="small" />}

@@ -13,6 +13,9 @@ const GridContainer = styled.div `
 display: grid;
 grid-template-columns: 18pt auto;
 column-gap: 12.5px;
+text-wrap: wrap;
+height: auto;
+
 `
 
 const NarratorButton = styled.div `
@@ -23,22 +26,21 @@ transform: translateY(-50%);
 `
 
 const HoverElement = styled.span `
-position: none;
 &:hover {
-cursor:pointer;
+cursor: pointer;
 }
 `
 
 export default function InfoBlock(props) {
     return (
         <IBlock>
-            <h2 style={{position: "relative", height: "30pt"}}>
+            <h2>
                 <GridContainer>
                     <Twemoji options={{ className: 'twemoji' }}>{props.emoji}</Twemoji>
                     <div>
                         
                         <HoverElement>
-                            <Tooltip title={props.tooltip} sx={{ opacity: .9}} placement={"top"} arrow>{props.subheading}</Tooltip>
+                        <Tooltip title={props.tooltip} sx={{ opacity: .9}} placement={"top"} arrow>{props.subheading}</Tooltip>
                         </HoverElement>
                         {props.narrator !== undefined && <Narrator src={props.narrator} /> }
                     </div>

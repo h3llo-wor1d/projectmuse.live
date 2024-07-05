@@ -135,8 +135,6 @@
     width: 20pt;
     z-index: 0;
     height: auto;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-top: 20%;
     margin-right: 12.5px;
   }
