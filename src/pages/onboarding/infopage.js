@@ -24,18 +24,16 @@ const Page = styled.div `
 
 const VideoWrapper = styled.div `
 margin: 0;
-z-index: 990999;
+z-index: 990;
 position: absolute;
 `
 
 const sleep = s => new Promise(r => setTimeout(r, s*1000));
 
-const spawnItemWrapper = styled.div `
+const SpawnItemWrapper = styled.div `
 margin: 0;
-z-index 999;
+z-index 9999;
 position: fixed;
-width: 100%;
-height: 100%;
 `
 
 
@@ -48,18 +46,6 @@ const style = {
     bgcolor: 'background.paper',
     p: 4,
   };
-  
-
-const StyledFab = styled(Fab)({
-    position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-    width: 25,
-    height: 25
-});
 
 export default function InfoPage(props) {
     const [open, setOpen] = React.useState(false);
@@ -147,7 +133,7 @@ export default function InfoPage(props) {
                     <Button sx={{position: "relative", left: "50%", transform: "translateX(-50%)"}} onClick={() => setModalOpen(false)}>ok</Button>
                 </Box>
             </Modal>
-            <spawnItemWrapper>
+            <SpawnItemWrapper>
                 <Collapse in={open}>
                     <Alert
                         sx={{ mb: 2 }}
@@ -156,7 +142,7 @@ export default function InfoPage(props) {
                     </Alert>
                 </Collapse>
                 {adhdMode &&
-                <div style={{columnGap: "5px", display: "grid", gridTemplateColumns: "auto auto", position: "fixed",bottom: 10,right: 10,zIndex: 99999}}>
+                <div style={{columnGap: "5px", display: "grid", gridTemplateColumns: "auto auto", position: "fixed",bottom: 10,right: 10,zIndex: 9999}}>
                 <Tooltip title="Remove distractions" arrow>
                     <IconButton sx={{bottom: "5px", opacity: count === 1 ? 0 : 1}}><RemoveCircle /></IconButton>
                 </Tooltip>
@@ -164,7 +150,7 @@ export default function InfoPage(props) {
                     <Chip label="ADHD Mode" onClick={handleClick} />  
                 </Tooltip>
                 
-                </div> }
+                </div>}
                     
                 <Breadcrumbs
                     separator={<NavigateNext fontSize="small" />}
@@ -173,7 +159,7 @@ export default function InfoPage(props) {
                         position: "fixed",
                         bottom: 0,
                         left: 0,
-                        zIndex: 99999999,
+                        zIndex: 9,
                         padding: "10px 20px 10px 30px",
                         borderTopRightRadius: "30px",
                         backgroundColor: "rgba(255,255,255,0.15)"
@@ -189,7 +175,7 @@ export default function InfoPage(props) {
                         {insertText}
                     </Alert>
                 </Collapse>
-            </spawnItemWrapper>
+            </SpawnItemWrapper>
             <VideoWrapper>
                 {videoPlayers}
             </VideoWrapper>
@@ -197,7 +183,7 @@ export default function InfoPage(props) {
                 <img src={MuseLogo} alt="muse logo" className="logo" />
             </div>
             <br/><br/>
-            <div style={{zIndex: 99999, position: 'relative'}}>
+            <div>
                 <InfoBlock subheading={"Information On The Show"} emoji={"💫"} narrator={i1} 
                 tooltip={"Small introductory segment about the show"}
                 p={
@@ -262,7 +248,6 @@ export default function InfoPage(props) {
                         </div>
                     </p>
                 } /><br/>
-                
             </div>
         </Page>
     )

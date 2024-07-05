@@ -29,7 +29,7 @@ export default function Narrator(props) {
     }
 
     return (
-        <Tooltip arrow title={"Narrate this section of the information page"} sx={{marginLeft: "10px", zIndex: 9999999}} placement={"top"}>
+        <Tooltip arrow title={"Narrate this section of the information page"} sx={{marginLeft: "10px", zIndex: 999}} placement={"top"}>
             <IconButton onClick={handleClick}>
                 {!isActive ? <SpeakerNotes /> : <SpeakerNotesOff />}
             </IconButton>
