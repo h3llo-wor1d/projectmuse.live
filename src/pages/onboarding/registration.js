@@ -155,10 +155,11 @@ export default function Registration(props) {
     }
 
     const submitForm = async () => {
+        // check for errors in the form
         if (checkErrors().length > 0) return;
-        console.log("apparently no errors!")
+
         let finalData = compileData();
-        let f1 = await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/add-profile", {
+        await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/add-profile", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -168,8 +169,6 @@ export default function Registration(props) {
                 content: finalData
             })
         })
-        console.log(f1.status, f1.statusText)
-
     }
 
     const onPlatformChange = (e) => {
