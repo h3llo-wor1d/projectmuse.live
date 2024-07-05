@@ -1,6 +1,6 @@
 import '../style/components/discordButton.css';
-
-// test url
+import DiscordIcon from '../images/icons/discord.svg';
+// test url, prod url uses projectmuse.live
 const AUTH_URL = "https://discord.com/oauth2/authorize?client_id=1023694867798441984&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fredirect&scope=identify+guilds.join";
 
 
@@ -17,7 +17,7 @@ export default function DiscordButton(props)  {
             onClick={handleLogin}
         >
             <div style={{lineHeight: "normal", verticalAlign: "middle", height: "24px"}} >
-                <img style={{verticalAlign: "middle", height: "24px", marginRight: "15px"}} src={`assets/icons/discord.svg`} alt={"discord"} />
+                <img style={{verticalAlign: "middle", height: "24px", marginRight: "15px"}} src={DiscordIcon} alt={"discord"} />
                 <span>Sign In To Continue</span>
             </div>
         </div>

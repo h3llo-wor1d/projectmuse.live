@@ -3,6 +3,7 @@ import { Alert, Box, Breadcrumbs, Collapse, FormControl, IconButton, InputAdornm
 import MuseLogo from '../../images/icon_color.png';
 import styled from 'styled-components';
 import { useEffect, useState } from "react";
+import DiscordButton from "../../components/DiscordButton";
 
 const Page = styled.div `
     padding: 30px 30px 30px 30px;
@@ -185,9 +186,9 @@ export default function Registration(props) {
                             sx={{flex: "35%"}}
                         >
                             {platforms.map((option) => (
-                            <MenuItem key={option.label} value={option.value}>
-                                {option.label}
-                            </MenuItem>
+                                <MenuItem key={option.label} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
                             ))}
                         </TextField>
                         <TextField 
@@ -214,28 +215,16 @@ export default function Registration(props) {
                         rowGap: "25px",
                         columnGap: "25px"
                     }}>
-                        <TextField 
-                            label="Reference Link 1" 
-                            variant="outlined" 
-                            required
-                            sx={{flex: "35%"}}
-                        />
-                        <TextField 
-                            label="Reference Link 2" 
-                            variant="outlined" 
-                            required
-                            sx={{flex: "35%"}}
-                        />
-                        <TextField 
-                            label="Reference Link 3" 
-                            variant="outlined" 
-                            sx={{flex: "35%"}}
-                        />
-                        <TextField 
-                            label="Reference Link 4" 
-                            variant="outlined" 
-                            sx={{flex: "35%"}}
-                        />
+                        {
+                            Array.apply(null, Array(4)).map((i, v) => v).map((v, i) => 
+                                <TextField 
+                                    label={`Reference Link ${i+1}`}
+                                    variant="outlined" 
+                                    required
+                                    sx={{flex: "35%"}}
+                                />
+                            )
+                        }
                     </Box>
                 </Box>
                 <br/>
