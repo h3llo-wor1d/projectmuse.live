@@ -20,8 +20,6 @@ export default function Redirect(props) {
         })
         let f2 = await f1.json();
         if (f1.status === 200) {
-            console.log("Authenticated with backend successfully!");
-            console.log(`Bearer ${f2.access_token}`)
             let f3 = await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/userprofile", {
                 method: "POST",
                 headers: {
@@ -34,7 +32,6 @@ export default function Redirect(props) {
             let f4 = await f3.json();
             localStorage.setItem("userData", JSON.stringify(f4))
             localStorage.setItem("discordtoken", f2.access_token);
-            console.log("Successfully set token in local storage. User may now close the window.");
             setSafe("You may now close this window.");
         } else {
             setSafe("Invalid User Authorization. Please Try Again.");

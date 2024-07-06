@@ -212,7 +212,7 @@ export default function Registration(props) {
                      position: "fixed",
                      bottom: 0,
                      left: 0,
-                     zIndex: 0,
+                     zIndex: 999,
                 }}>
                     <Breadcrumbs
                     separator={<NavigateNext fontSize="small" />}

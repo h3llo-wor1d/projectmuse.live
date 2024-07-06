@@ -130,11 +130,8 @@
   }
 
   .twemoji {
-    display: inline-block;
     font-size: inherit;
     width: 20pt;
     z-index: 0;
-    height: auto;
-    margin-top: 10%;
-    margin-right: 12.5px;
+    vertical-align: middle;
   }

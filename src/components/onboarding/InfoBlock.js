@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Twemoji from 'react-twemoji';
-import Narrator from '../Narrator';
 import { Tooltip } from '@mui/material';
+import { Emojis } from '../../data/emojis';
 
 const IBlock = styled.div `
 display: block;
@@ -10,10 +10,11 @@ z-index: 0;
 `;
 
 const GridContainer = styled.div `
-display: grid;
+display: flex;
 grid-template-columns: 18pt auto;
 column-gap: 12.5px;
 text-wrap: wrap;
+align-items: center;
 height: auto;
 `
 
@@ -28,13 +29,12 @@ export default function InfoBlock(props) {
         <IBlock>
             <h2>
                 <GridContainer>
-                    <Twemoji options={{ className: 'twemoji' }}>{props.emoji}</Twemoji>
-                    <div>
-                        <HoverElement>
-                            <Tooltip title={props.tooltip} sx={{ opacity: .9}} placement={"top"} arrow>{props.subheading}</Tooltip>
-                        </HoverElement>
-                        {props.narrator !== undefined && <Narrator src={props.narrator} /> }
-                    </div>
+                    <Twemoji options={{className: "twemoji"}}>{props.emoji}</Twemoji>
+                    <HoverElement>
+                        <Tooltip title={props.tooltip} sx={{ opacity: .9}} placement={"top"} arrow>
+                            {props.subheading}
+                        </Tooltip>
+                    </HoverElement>
                 </GridContainer>
             </h2>
             {props.p}

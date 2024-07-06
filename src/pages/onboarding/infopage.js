@@ -5,7 +5,6 @@ import { Breadcrumbs, Link, Paper, Typography } from '@mui/material';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { NavigateNext } from '@mui/icons-material';
-import i1 from "../../audio/Narrator/i1.flac";
 import { commonFAQ } from '../../data/commonFAQ';
 import dnd from '../../images/status/dnd.png';
 import idle from '../../images/status/idle.png';
@@ -63,7 +62,7 @@ export default function InfoPage(props) {
             </div>
             <br/><br/>
             <div>
-                <InfoBlock subheading={"Information On The Show"} emoji={"💫"} narrator={i1} 
+                <InfoBlock subheading={"Information On The Show"} emoji={"💫"}
                 tooltip={"Small introductory segment about the show"}
                 p={
                     <p style={{marginTop: "5px"}}>
