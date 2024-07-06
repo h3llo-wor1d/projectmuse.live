@@ -1,13 +1,9 @@
-import { Add, NavigateNext, PlusOne, Remove } from "@mui/icons-material";
-import { Alert, Box, Breadcrumbs, Button, Collapse, FormControl, IconButton, InputAdornment, InputLabel, Link, MenuItem, OutlinedInput, Paper, TextField, Typography } from "@mui/material";
+import { NavigateNext } from "@mui/icons-material";
+import { Alert, Box, Breadcrumbs, Button, Collapse, Link, MenuItem, Paper, TextField, Typography } from "@mui/material";
 import MuseLogo from '../../images/icon_color.png';
 import styled from 'styled-components';
-import { useEffect, useRef, useState } from "react";
-import DiscordButton from "../../components/DiscordButton";
-import { v4 as uuidv4 } from 'uuid';
-import { artLinkHandler } from "../../functions/registrationHandlers";
+import { useEffect,  useState } from "react";
 import { getItem, getItemJSON, setItem } from "../../functions/storageHandler";
-import { Identity } from "../../identity";
 import { errorMessages } from "../../data/errorMessages";
 
 const Page = styled.div `
@@ -39,9 +35,6 @@ export default function Registration(props) {
 
     const [artError, setArtError] = useState(false);
     const [songError, setSongError] = useState(false);
-
-    const [artStyleError, setArtStyleError] = useState(false);
-    const [musicStyleError, setMusicStyleError] = useState(false)
     
     const [errors, setErrors] = useState([]);
 
