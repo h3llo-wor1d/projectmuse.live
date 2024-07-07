@@ -12,6 +12,7 @@ import "./style/index.css";
 import Redirect from "./pages/redirect";
 import InfoPage from "./pages/onboarding/infopage";
 import Registration from "./pages/onboarding/registration";
+import Dashboard from "./pages/dashboard";
 
 const darkTheme = createTheme({
   palette: {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/onboarding/registration",
     element: <Registration />
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />
   }
 ]);
 

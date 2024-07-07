@@ -184,49 +184,8 @@ export default function RegistrationEdit(props) {
         console.log(JSON.stringify(formData, null, 4));
     }
 
-    const breadcrumbs = [
-        <Link
-          underline="hover"
-          key="2"
-          color="inherit"
-          href="/onboarding/info"
-        >
-          Info & Instructions
-        </Link>,
-        <Typography key="3" color="text.primary">
-            Registration
-        </Typography>,
-    ];
-
     return (
         <Page>
-            <Collapse in={isError} sx={{position: "fixed", right: 0, top: 0}}>
-                <Alert
-                    severity="error"
-                    variant="filled"
-                    >
-                    {error}
-                </Alert>
-            </Collapse>
-            <div style={{
-                     position: "fixed",
-                     bottom: 0,
-                     left: 0,
-                     zIndex: 999,
-                }}>
-                    <Breadcrumbs
-                    separator={<NavigateNext fontSize="small" />}
-                    aria-label="breadcrumb"
-                    sx={{
-                       
-                        padding: "10px 20px 10px 30px",
-                        borderTopRightRadius: "30px",
-                        backgroundColor: "grey"
-                    }} 
-                    >
-                    {breadcrumbs}
-                </Breadcrumbs>
-                </div>
             <div style={{textAlign: "center"}}>
                 <img src={MuseLogo} alt="muse logo" className="logo" />
             </div>
