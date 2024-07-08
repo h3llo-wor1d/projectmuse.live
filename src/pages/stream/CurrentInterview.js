@@ -2,6 +2,7 @@ import { Avatar, Button, Card, CardHeader } from "@mui/material"
 import styled from "styled-components";
 import { TiktokIcon, TwitchIcon, TwitterIcon, YoutubeIcon } from "../../SocialIcons";
 import { useEffect, useRef, useState } from "react";
+import BallBotListener from "../../BallBotListener";
 
 const Page = styled.div `
 margin: 0;
@@ -24,21 +25,47 @@ const delay = async (n) => {return new Promise(function(resolve){
 })};
 
 const SocialMap = {
-    Twitter: <TwitterIcon color={"rgba(255, 255, 255, 0.7)"} size="0.875rem" />,
-    Twitch: <TwitchIcon color={"rgba(255, 255, 255, 0.7)"} size="0.875rem" />
+    twitter: <TwitterIcon color={"rgba(255, 255, 255, 0.7)"} size="0.875rem" />,
+    twitch: <TwitchIcon color={"rgba(255, 255, 255, 0.7)"} size="0.875rem" />,
+    tiktok: <TiktokIcon color={"rgba(255, 255, 255, 0.7)"} size="0.875rem" />
 }
 
 export default function CurrentInterview() {
-    const cardSocials = [
-        {type: "Twitter", handle: "h31lo_w0r1d"},
-        {type: "Twitch", handle: "h3llo_wor1d"}
-    ]
+    var cardSocials = [{type: "None Stated", handle: ""}];
+    const [currentName, setCurrentName] = useState("Nobody Yet!");
+    const [avatarURL, setAvatarURL] = useState("https://archive.org/services/img/discordprofilepictures")
+
+    var Listener = new BallBotListener();
 
     const [curSocial, setCurSocial] = useState(cardSocials[0]);
 
     var curIndex = 0;
 
     const cardRef = useRef();
+
+    const handle = (etype, edata) => {
+        console.log(etype)
+        if (etype === "init" || etype === "newUser") {
+            if (edata.currentUser !== null) {
+                setCurrentName(edata.currentUser);
+                setAvatarURL(edata.avatar);
+                let socials = edata.currentUserData.identity.rawSocials;
+                let newSocials = Object.keys(socials).map(
+                    socialType => {
+                        return {
+                            type: socialType, 
+                            handle: socials[socialType]
+                        }
+                    }
+                )
+                newSocials = newSocials.filter(i => Object.keys(SocialMap).indexOf(i.type) !== -1)
+                cardSocials = newSocials;
+                setCurSocial(newSocials[0]);
+                setTimeout(() => {AnimateCard()}, 5000);
+            }
+            return;
+        }
+    }
 
     const cycle = () => {
         if (curIndex === cardSocials.length-1) {
@@ -63,8 +90,13 @@ export default function CurrentInterview() {
         setTimeout(() => {AnimateCard()}, 5000);
     }
 
+    const InitListener = () => {
+        Listener.eventHandler = handle;
+        Listener.start();
+    }
+
     useEffect(() => {
-        setTimeout(() => {AnimateCard()}, 5000)
+        InitListener();    
     }, [])
 
     return (
@@ -82,9 +114,11 @@ export default function CurrentInterview() {
                         padding: "0px 0px 0px 0px"  
                     }}
                     avatar={
-                        <Avatar aria-label="recipe" src={"https://cdn.discordapp.com/avatars/902242926577455235/5a7e1a30d6db94ff9baf125fedd9fc13.webp?size=160"} />
+                        <Avatar aria-label="recipe" 
+                            src={avatarURL} 
+                        />
                     }
-                    title="Rai"
+                    title={currentName}
                     subheader={
                         <div style={{position: 'relative', height: "20px"}}>
                             <div ref={cardRef} id="animateCard" style={{overflow: "hidden", position: 'absolute', bottom:0}}>
