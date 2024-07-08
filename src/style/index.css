@@ -135,3 +135,35 @@
     z-index: 0;
     vertical-align: middle;
   }
+
+@keyframes changesize {
+  from {
+    max-height: 20px;
+  }
+  to {
+    max-height: 0px;
+  }
+}
+
+@keyframes changealt {
+  from {
+    max-height: 0px;
+  }
+  to {
+    max-height: 20px;
+  }
+}
+
+.animateCardClose {
+  max-height: 20px;
+  animation: changesize 2s;
+}
+
+.hidden {
+  max-height: 0px;
+}
+
+.animateCardOpen {
+  max-height: 20px;
+  animation: changealt 2s;
+}

@@ -13,6 +13,7 @@ import Redirect from "./pages/redirect";
 import InfoPage from "./pages/onboarding/infopage";
 import Registration from "./pages/onboarding/registration";
 import Dashboard from "./pages/dashboard";
+import CurrentInterview from "./pages/stream/CurrentInterview";
 
 const darkTheme = createTheme({
   palette: {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/onboarding/registration",
     element: <Registration />
+  },
+  {
+    path: "/stream/currentInterview",
+    element: <CurrentInterview />
   }
 ]);
 
