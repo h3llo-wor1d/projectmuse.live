@@ -22,7 +22,7 @@ export default class BallBotListener {
         this.webSocket = new WebSocket(
             window.location.origin === "http://localhost:3000" ?
             "ws://localhost:3030" :
-            "ws://ballbot.projectmuse.live:3030"
+            "wss://ballbot.projectmuse.live:3030"
         );
         this.webSocket.onopen = () => {
             this.heartbeat();
