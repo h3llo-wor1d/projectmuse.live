@@ -14,6 +14,7 @@ import InfoPage from "./pages/onboarding/infopage";
 import Registration from "./pages/onboarding/registration";
 import Dashboard from "./pages/dashboard";
 import CurrentInterview from "./pages/stream/CurrentInterview";
+import PickingUser from "./pages/stream/PickingUser";
 
 const darkTheme = createTheme({
   palette: {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "/stream/currentInterview",
     element: <CurrentInterview />
+  },
+  {
+    path: "/stream/pickingUser",
+    element: <PickingUser />
   }
 ]);
 

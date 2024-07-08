@@ -8,6 +8,12 @@ export default class BallBotListener {
         this.webSocket.send("heartbeat");
         setTimeout(this.heartbeat, 500);
      }
+    
+    close = () => {
+        try {
+            this.webSocket.close();
+        } catch {}
+    }
 
     start = () => {
         if (this.webSocket !== false) {
@@ -23,7 +29,7 @@ export default class BallBotListener {
             console.log("WebSocket Client Started")
         }
         this.webSocket.onmessage = (event) => {
-            console.log('uuuuh')
+            console.log(event.data)
         let data = JSON.parse(event.data);
         this.eventHandler(data.type, data.content);
         };

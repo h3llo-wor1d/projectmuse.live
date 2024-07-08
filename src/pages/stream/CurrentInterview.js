@@ -96,7 +96,10 @@ export default function CurrentInterview() {
     }
 
     useEffect(() => {
-        InitListener();    
+        if (Listener.webSocket === false ) {
+            Listener.close();
+            InitListener();    
+        }   
     }, [])
 
     return (
