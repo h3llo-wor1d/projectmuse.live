@@ -1,6 +1,7 @@
 export default class BallBotListener {
     webSocket = false;
     eventHandler;
+    initMessage = false;
 
     heartbeat = () => {
         if (!this.webSocket) return;
@@ -19,14 +20,19 @@ export default class BallBotListener {
         if (this.webSocket !== false) {
             this.webSocket.close();
         }
+        
         this.webSocket = new WebSocket(
             window.location.origin === "http://localhost:3000" ?
             "ws://localhost:3030" :
             "wss://ballbot.projectmuse.live:3030"
         );
+        let self = this;
         this.webSocket.onopen = () => {
             this.heartbeat();
-            console.log("WebSocket Client Started")
+            console.log("WebSocket Client Started");
+            if (self.initMessage) {
+                self.webSocket.send(self.initMessage)
+            }
         }
         this.webSocket.onmessage = (event) => {
             console.log(event.data)

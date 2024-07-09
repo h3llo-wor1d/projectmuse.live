@@ -1,0 +1,84 @@
+import styled from "styled-components"
+import BallBotListener from "../../BallBotListener";
+import { useEffect } from "react";
+import { Card } from "@mui/material";
+
+const Page = styled.div `
+margin: 0;
+font-family: "Garet Heavy";
+font-size: 30pt;
+text-align: center;
+`
+
+export default function Timer() {
+    var clockInterval = false;
+
+    const handle = (etype, edata) => {
+        if (etype === "timer-complete") {
+            clearInterval(clockInterval);
+            document.getElementById("demo")
+                    .innerHTML = "";
+        }
+        if (etype === "timer-start") {
+            if (clockInterval !== false) clearInterval(clockInterval);
+            clockInterval = setInterval(function () {
+                 
+                // Getting current time in required format
+                let now = new Date().getTime();
+                let t = edata.endsAt - now;
+
+ 
+                // Getting value of days, hours, minutes, seconds
+                let hours = Math.floor(
+                    (t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                let minutes = Math.floor(
+                    (t % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                let seconds = Math.floor(
+                    (t % (1000 * 60)) / 1000).toString().padStart(2, '0');
+ 
+                // Output the remaining time
+                let h = hours === "00" ? "" : hours + ":"
+                document.getElementById("demo").innerHTML =
+                h + minutes + ":" + seconds;
+ 
+                // Output for over time
+                if (t < 0) {
+                    clearInterval(clockInterval);
+                    document.getElementById("demo")
+                            .innerHTML = "";
+                }
+            }, 1000);
+        }
+    }
+
+    var Listener = new BallBotListener();
+
+    const InitListener = () => {
+        Listener.eventHandler = handle;
+        Listener.initMessage = "timer.actions.init"
+        Listener.start();
+    }
+
+    useEffect(() => {
+        if (Listener.webSocket === false ) {
+            Listener.close();
+            InitListener();    
+        }
+    }, [])
+
+    return (
+        <Page>
+            <Card
+            sx={{
+                borderBottomLeftRadius: "60px",
+                width: "100%",
+                padding: "16px 16px 16px 16px",
+                textAlign: "center"
+            }}
+            >
+                <span id="demo" /> remaining
+            </Card>
+            
+        </Page>
+    )
+}
