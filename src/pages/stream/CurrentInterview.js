@@ -61,7 +61,9 @@ export default function CurrentInterview() {
                 newSocials = newSocials.filter(i => Object.keys(SocialMap).indexOf(i.type) !== -1)
                 cardSocials = newSocials;
                 setCurSocial(newSocials[0]);
-                setTimeout(() => {AnimateCard()}, 5000);
+                if (newSocials.length > 1) {
+                    setTimeout(() => {AnimateCard()}, 5000);
+                }
             }
             return;
         }
