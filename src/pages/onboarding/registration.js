@@ -64,7 +64,8 @@ export default function Registration(props) {
                 global_name: chunk3.global_name,
                 pronouns: chunk3.pronouns,
                 social_url: chunk3.social_url,
-                preferred_social: chunk3.preferred_social
+                preferred_social: chunk3.preferred_social,
+                rawSocials: chunk3.socials
             }
         } 
     }
