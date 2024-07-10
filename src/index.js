@@ -12,7 +12,6 @@ import "./style/index.css";
 import Redirect from "./pages/redirect";
 import InfoPage from "./pages/onboarding/infopage";
 import Registration from "./pages/onboarding/registration";
-import Dashboard from "./pages/dashboard";
 import CurrentInterview from "./pages/stream/CurrentInterview";
 import PickingUser from "./pages/stream/PickingUser";
 import Timer from "./pages/stream/Timer";

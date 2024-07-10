@@ -245,14 +245,14 @@ export default function Registration(props) {
                         variant="outlined" 
                         defaultValue={identity.global_name}
                         fullWidth 
-                        helperText={"This is taken from your Discord account by default, feel free to change it!"} 
+                        helperText={"This is automatically taken from your Discord account, feel free to change it!"} 
                     />
                     <TextField 
                         label="Your Pronouns" 
                         variant="outlined" 
                         defaultValue={identity.pronouns}
                         fullWidth 
-                        helperText={"This is taken from your Discord account by default, feel free to change it!"} 
+                        helperText={"This is automatically taken from your Discord account, feel free to change it!"} 
                     />
                     <Box sx={{
                         display: "flex",
@@ -264,7 +264,7 @@ export default function Registration(props) {
                             label="Streaming Platform" 
                             select
                             onChange={onPlatformChange}
-                            helperText={"Some of these are taken from your Discord account by default, feel free to change them!"}
+                            helperText={"Some of these are gathered from your Discord account automatically, feel free to edit them!"}
                             variant="outlined" 
                             required
                             defaultValue={identity.preferred_social}
@@ -294,7 +294,8 @@ export default function Registration(props) {
                     B. Song and Art References
                 </Typography><br/>
                 <Box>
-                    <p style={{fontSize: "11pt", marginBottom: "12px"}}>Song References</p>
+                    <p style={{fontSize: "11pt", marginBottom: "12px"}}>Song References</p> 
+                    
                     <Box sx={{
                         display: "flex",
                         flexWrap: "wrap",
@@ -303,6 +304,7 @@ export default function Registration(props) {
                     }}>
                         <TextField 
                             label={`Reference Link 1`}
+                            placeholder={"YouTube/Spotify/Etc"}
                             variant="outlined" 
                             defaultValue={songLinks[0]}
                             onChange={(e) => handleChange("link", {index: 0, value: e.target.value, type: 'song'})}
@@ -314,6 +316,7 @@ export default function Registration(props) {
                         />
                         <TextField 
                             label={`Reference Link 2`}
+                            placeholder={"YouTube/Spotify/Etc"}
                             variant="outlined" 
                             defaultValue={songLinks[1]}
                             onChange={(e) => handleChange("link", {index: 1, value: e.target.value, type: 'song'})}
@@ -328,6 +331,7 @@ export default function Registration(props) {
                                 <TextField 
                                     label={`Reference Link ${i+3}`}
                                     variant="outlined" 
+                                    placeholder={"YouTube/Spotify/Etc"}
                                     defaultValue={songLinks[i+2]}
                                     helperText={errors.indexOf(201) !== -1 && errorMessages[201]}
                                     error={errors.indexOf(201) !== -1}
@@ -339,6 +343,7 @@ export default function Registration(props) {
                         <TextField multiline required fullWidth label="Style Notes/Other Notes" rows={3}
                             onChange={(e) => handleChange("style", {value: e.target.value, type: 'music'})}
                             error={errors.indexOf(202) !== -1}
+                            placeholder={"A general description of the style of song you're looking for"}
                             defaultValue={songStyle}
                             helperText={errors.indexOf(202) !== -1 && errorMessages[202]}
                         />
@@ -357,6 +362,7 @@ export default function Registration(props) {
                             label={`Reference Link 1`}
                             variant="outlined" 
                             defaultValue={artLinks[0]}
+                            placeholder={"Image URL"}
                             sx={{flex: "35%"}}
                             required
                             helperText={errors.indexOf(100) !== -1 && errorMessages[100]}
@@ -368,6 +374,7 @@ export default function Registration(props) {
                             label={`Reference Link 2`}
                             variant="outlined" 
                             defaultValue={artLinks[1]}
+                            placeholder={"Image URL"}
                             sx={{flex: "35%"}}
                             helperText={errors.indexOf(100) !== -1 && errorMessages[100]}
                             error={errors.indexOf(100) !== -1 || errors.indexOf(101) !== -1}
@@ -379,6 +386,7 @@ export default function Registration(props) {
                             Array.apply(null, Array(2)).map((i, v) => v).map((v, i) => 
                                 <TextField 
                                     label={`Reference Link ${i+3}`}
+                                    placeholder={"Image URL"}
                                     variant="outlined" 
                                     error={errors.indexOf(101) !== -1}
                                     onChange={(e) => handleChange("link", {index: i+2, value: e.target.value, type: 'art'})}
@@ -398,6 +406,7 @@ export default function Registration(props) {
                         error={errors.indexOf(102) !== -1}
                         rows={3} defaultValue={artStyle} 
                         helperText={errors.indexOf(102) !== -1 && errorMessages[102]}
+                        placeholder={"A general description of the emote you're looking for"}
                         />
                         
                     </Box>
@@ -405,8 +414,7 @@ export default function Registration(props) {
             </Box>
             <br/>
             <Paper sx={{padding: "20px 20px 20px 20px"}}>
-                This form can be edited again at any time. Press the button below to gain access to the 
-                rest of the server and complete the registration process.<br/><br/>
+                This form can be edited again at any time by returning to this page.<br/><br/>
                 <Button variant="outlined" onClick={submitForm}>Submit Form</Button>
                 <br/>
                 <p style={{color: "#f44336", fontSize: "9pt", opacity: errors.length > 0 ? 1 : 0, marginTop: "8px"}}>
