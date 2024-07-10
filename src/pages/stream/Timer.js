@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import BallBotListener from "../../BallBotListener";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@mui/material";
 
 const Page = styled.div `
@@ -12,6 +12,7 @@ text-align: center;
 
 export default function Timer() {
     var clockInterval = false;
+    const [timeRem, setTimeRem] = useState("");
 
     const handle = (etype, edata) => {
         if (etype === "timer-complete") {
@@ -38,14 +39,12 @@ export default function Timer() {
  
                 // Output the remaining time
                 let h = hours === "00" ? "" : hours + ":"
-                document.getElementById("demo").innerHTML =
-                h + minutes + ":" + seconds;
+                setTimeRem(h + minutes + ":" + seconds);
  
                 // Output for over time
                 if (t < 0) {
+                    setTimeRem("");
                     clearInterval(clockInterval);
-                    document.getElementById("demo")
-                            .innerHTML = "";
                 }
             }, 1000);
         }
@@ -76,7 +75,9 @@ export default function Timer() {
                 textAlign: "center"
             }}
             >
-                <span id="demo" /> remaining
+                {
+                timeRem !== "" ? <div>{timeRem} remaining</div> : <div>Waiting For Start</div>
+                }
             </Card>
             
         </Page>
