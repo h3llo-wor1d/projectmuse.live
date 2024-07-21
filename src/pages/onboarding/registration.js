@@ -75,6 +75,7 @@ export default function Registration(props) {
         if (getItem(`artLinks`) === null) setItem('artLinks', canister);
         if (getItem(`songLinks`) === null) setItem('songLinks', canister);
         if (getItem(`identity`) === null) setItem('identity', JSON.stringify({...JSON.parse(getItem("userData")), social_url: "", preferred_social: "none"}));
+        if (getItem("initialData") === null) getInitialData();
     }, [])
 
     const handleChange = (objType, data) => {
@@ -146,6 +147,29 @@ export default function Registration(props) {
         if (getItem("artStyleNotes") === null || getItem("artStyleNotes") === "") errors.push(102);
         setErrors(errors);
         return errors;
+    }
+
+    const getInitialData = async () => {
+        let f1 = await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/captureOrder", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({userID: getItemJSON("userData").id})
+        })
+        let f2 = await f1.json();
+        if (f1.status === 200) {
+            if (Object.keys(f2).indexOf("Item") !== -1) {
+                setItem('initialData', JSON.stringify(f2.Item));
+                let content = f2.Item.content;
+                setItem('identity', JSON.stringify(content.identity));
+                setItem('musicStyleNotes', content.songData.styleNotes);
+                setItem("artStyleNotes", content.artData.styleNotes);
+                setItem("artLinks", JSON.stringify(content.artData.refLinks));
+                setItem("songLinks", JSON.stringify(content.songData.refLinks))
+                window.location.reload();
+            }
+        }
     }
 
     const submitForm = async () => {
