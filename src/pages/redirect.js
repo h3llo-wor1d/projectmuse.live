@@ -30,7 +30,7 @@ export default function Redirect(props) {
                 })
             })
             let f4 = await f3.json();
-            localStorage.setItem("userData", JSON.stringify(f4))
+            localStorage.setItem("userData", JSON.stringify(f4));
             localStorage.setItem("discordtoken", f2.access_token);
             setSafe("You may now close this window.");
         } else {

@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import * as React from "react";
 import { Alert, Box, Button, Collapse, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { z } from "zod";
+import getInitialData from "../../functions/getInitialData";
 
 function expand(obj) {
     var keys = Object.keys(obj);
@@ -26,12 +27,14 @@ const formPopup = {
     severity: [
         "error",
         "info",
-        "success"
+        "success",
+        "error"
     ],
     message: [
         "One or more fields are incorrect.",
         "Submitting form, please wait...",
-        "Form submitted successfully!"
+        "Form submitted successfully!",
+        "Failed to submit form. Please try again later."
     ]
 }
 
@@ -73,8 +76,6 @@ export default function RegistrationForm({
     const [formSubmitting, setFormSubmitting] = React.useState(false);
     const [formProgress, setFormProgress] = React.useState(1); // default: info. ind 0 = error
 
-    
-    // Zod schema for validating the links
     const schema = z.object(expand({
         "songRef1, songRef2, artRef1, artRef2": z
             .string()
@@ -91,7 +92,6 @@ export default function RegistrationForm({
     }));
 
 
-    // Validation function
     const validateLinks = (data) => {
     try {
         schema.parse(data);
@@ -102,6 +102,7 @@ export default function RegistrationForm({
     };
 
     const getSavedData = React.useCallback(() => {
+        // still haven't figured out cloud data, unfortunately ;w;
         let data = localStorage.getItem("muse_registration");
         if (data) {
          // Parse it to a javaScript object
@@ -162,7 +163,6 @@ export default function RegistrationForm({
         const hasErrors = validate(data);
 
         if (hasErrors) {
-            console.log("errors detected")
             setFormProgress(0);
             setFormSubmitting(true);
             await sleep(1500);
@@ -172,9 +172,7 @@ export default function RegistrationForm({
         console.log("data is valid!")
         setFormProgress(1);
         setFormSubmitting(true);
-        // submit to API
         let out = await formatToAPI(data);
-        console.log(out)
         let f1 = await fetch("https://s3jyogzk1i.execute-api.eu-west-1.amazonaws.com/add-profile", {
             method: "POST",
             headers: {
@@ -185,10 +183,19 @@ export default function RegistrationForm({
                 content: out
             })
         })
+
+        // wait for response before updating the widget to say success
         let f2 = await f1.blob();
-        setFormProgress(2);
-        await sleep(1500);
-        setFormSubmitting(false);
+        if (f1.status === 200) {
+            setFormProgress(2);
+            await sleep(1500);
+            setFormSubmitting(false);
+        } else {
+            setFormProgress(3);
+            await sleep(1500);
+            setFormSubmitting(false);
+        }
+        
 
     };
 
@@ -203,7 +210,7 @@ export default function RegistrationForm({
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} onChange={() => {localStorage.setItem("muse_registration", JSON.stringify(getValues()))}}>
-            <Collapse in={formSubmitting} sx={{position: "fixed", right: 0, top: 0}}>
+            <Collapse in={formSubmitting} sx={{position: "fixed", right: 0, top: 0, zIndex: 999}}>
                 <Alert
                     severity={formPopup.severity[formProgress]}
                     variant="filled"
