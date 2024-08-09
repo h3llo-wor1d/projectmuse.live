@@ -19,8 +19,6 @@ export default function Timer() {
     const handle = (etype, edata) => {
         if (etype === "timer-complete") {
             clearInterval(clockInterval);
-            document.getElementById("demo")
-                    .innerHTML = "";
             setShowTimer(false);
             
         }
