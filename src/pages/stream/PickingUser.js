@@ -39,6 +39,7 @@ function SetTextColor(value){
 export default function PickingUser() {
     const [timeRem, setTimeRem] = useState(false);
     const [name, setName] = useState(false);
+    const [showTime, setShowTime] = useState(true);
     var Listener = new BallBotListener();
 
     const handle = (etype, edata) => {
@@ -56,6 +57,9 @@ export default function PickingUser() {
             setTimeRem(edata);
             console.log()
             SetTextColor(1 - edata/60);   
+        }
+        if (etype === "newUser") {
+            setShowTime(false);
         }
     }
 
@@ -82,9 +86,11 @@ export default function PickingUser() {
                             <>{name}, you have been selected!<br/></> :
                             <>Waiting on BallBot...</>
                         }
+                        {showTime && 
                         <div style={{fontSize: "18pt", opacity: name ? 1 : 0}}>
                             <span id="timeRem">{timeRem} seconds remain to join the show vc</span>
                         </div>
+                        }
                     </span>
                 </MainText>
             </MainContent>

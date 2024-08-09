@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import BallBotListener from "../../BallBotListener";
 import { useEffect, useState } from "react";
-import { Card } from "@mui/material";
+import { Card, Collapse, Fade } from "@mui/material";
 
 const Page = styled.div `
 margin: 0;
@@ -11,6 +11,8 @@ text-align: center;
 `
 
 export default function Timer() {
+    const [showTimer, setShowTimer] = useState(false);
+
     var clockInterval = false;
     const [timeRem, setTimeRem] = useState("");
 
@@ -19,8 +21,11 @@ export default function Timer() {
             clearInterval(clockInterval);
             document.getElementById("demo")
                     .innerHTML = "";
+            setShowTimer(false);
+            
         }
         if (etype === "timer-start") {
+            setShowTimer(true);
             if (clockInterval !== false) clearInterval(clockInterval);
             clockInterval = setInterval(function () {
                  
@@ -67,18 +72,19 @@ export default function Timer() {
 
     return (
         <Page>
-            <Card
-            sx={{
-                borderBottomLeftRadius: "60px",
-                width: "100%",
-                padding: "16px 16px 16px 16px",
-                textAlign: "center"
-            }}
-            >
-                {
-                timeRem !== "" ? <div>{timeRem} remaining</div> : <div>Waiting For Start</div>
-                }
-            </Card>
+            <Fade in={showTimer}>
+                <Card
+                sx={{
+                    borderBottomLeftRadius: "60px",
+                    width: "100%",
+                    padding: "16px 16px 16px 16px",
+                    textAlign: "center"
+                }}
+                >
+                    {timeRem} remaining
+                </Card>
+            </Fade>
+            
             
         </Page>
     )
