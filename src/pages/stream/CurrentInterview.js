@@ -44,28 +44,29 @@ export default function CurrentInterview() {
     const cardRef = useRef();
 
     const handle = (etype, edata) => {
-        console.log(etype)
         if (etype === "init" || etype === "newUser") {
             if (edata.currentUser !== null) {
                 setCurrentName(edata.currentUser);
                 setAvatarURL(edata.avatar);
                 let socials = edata.currentUserData.identity.rawSocials;
-                if (socials.length > 0) {
-                    let newSocials = Object.keys(socials).map(
-                        socialType => {
-                            return {
-                                type: socialType, 
-                                handle: socials[socialType]
+                try {
+                    if (Object.keys(socials).length > 0) {
+                        let newSocials = Object.keys(socials).map(
+                            socialType => {
+                                return {
+                                    type: socialType, 
+                                    handle: socials[socialType]
+                                }
                             }
+                        )
+                        newSocials = newSocials.filter(i => Object.keys(SocialMap).indexOf(i.type) !== -1)
+                        cardSocials = newSocials;
+                        setCurSocial(newSocials[0]);
+                        if (newSocials.length > 1) {
+                            setTimeout(() => {AnimateCard()}, 5000);
                         }
-                    )
-                    newSocials = newSocials.filter(i => Object.keys(SocialMap).indexOf(i.type) !== -1)
-                    cardSocials = newSocials;
-                    setCurSocial(newSocials[0]);
-                    if (newSocials.length > 1) {
-                        setTimeout(() => {AnimateCard()}, 5000);
                     }
-                }
+                } catch {} 
             }
             return;
         }
