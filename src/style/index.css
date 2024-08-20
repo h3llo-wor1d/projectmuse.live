@@ -178,3 +178,8 @@
   max-height: 20px;
   animation: changealt 2s;
 }
+
+.iconButton:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}

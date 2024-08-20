@@ -3,6 +3,8 @@ import * as React from "react";
 import { Alert, Box, Button, Collapse, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { z } from "zod";
 import getInitialData from "../../functions/getInitialData";
+import { HelpOutline } from "@mui/icons-material";
+import ContextModal from "./ContextModal";
 
 function expand(obj) {
     var keys = Object.keys(obj);
@@ -75,6 +77,8 @@ export default function RegistrationForm({
   }) {
     const [formSubmitting, setFormSubmitting] = React.useState(false);
     const [formProgress, setFormProgress] = React.useState(1); // default: info. ind 0 = error
+    const [modalOpen, setModalOpen] = React.useState(false);
+    const [modalType, setModalType] = React.useState(0);
 
     const schema = z.object(expand({
         "songRef1, songRef2, artRef1, artRef2": z
@@ -210,6 +214,11 @@ export default function RegistrationForm({
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} onChange={() => {localStorage.setItem("muse_registration", JSON.stringify(getValues()))}}>
+            <ContextModal 
+                open={modalOpen} 
+                onModalClosed={() => setModalOpen(!modalOpen)} 
+                modalType={modalType}
+            />
             <Collapse in={formSubmitting} sx={{position: "fixed", right: 0, top: 0, zIndex: 999}}>
                 <Alert
                     severity={formPopup.severity[formProgress]}
@@ -282,7 +291,16 @@ export default function RegistrationForm({
                 {["Art", "Song"].map((valType, ind) => 
                 <>
                     <Box>
-                        <p style={{fontSize: "11pt", marginBottom: "12px"}}>{valType} References</p>
+                        <p style={{fontSize: "11pt", marginBottom: "12px", display: "flex", flexWrap: "wrap", alignItems: "center"}}>
+                            <HelpOutline sx={{fontSize: "11pt", marginRight: "5px"}} 
+                            className="iconButton"
+                            onClick={() => {
+                                setModalType(ind);
+                                setModalOpen(true)
+                            }}
+                            />
+                            {valType} References
+                        </p>
                         
                         <Box sx={{
                             display: "flex",
